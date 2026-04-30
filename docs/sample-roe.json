@@ -1,0 +1,39 @@
+{
+  "$schema": "https://raw.githubusercontent.com/zangkasi55/AutoScan/main/packages/shared-schemas/roe.schema.json",
+  "id": "00000000-0000-0000-0000-000000000001",
+  "tenantId": "demo-tenant-001",
+  "scope": {
+    "cidrs": ["10.10.0.0/24"],
+    "hosts": ["scanme.example.com"],
+    "cloudAccounts": [
+      { "provider": "azure", "id": "0fdda5f4-0853-4336-8f41-0370176387f5", "tagFilter": "env=dev" }
+    ]
+  },
+  "exclusions": {
+    "cidrs": ["10.10.0.99/32"],
+    "hosts": ["legacy.internal.example.com"],
+    "tags": ["pii", "production-readonly"]
+  },
+  "testCategories": ["recon", "cve", "webapp"],
+  "destructiveOptIns": [],
+  "timeWindow": {
+    "startsAt": "2026-04-30T00:00:00Z",
+    "endsAt":   "2026-07-30T00:00:00Z",
+    "noGoWindows": [
+      { "start": "02:00", "end": "04:00", "reason": "nightly backup window" }
+    ]
+  },
+  "contacts": [
+    { "role": "vm-lead",       "name": "Pim Sutthichai", "channel": "pim@example.co.th" },
+    { "role": "incident-cmdr", "name": "Wit Kasemsuk",   "channel": "wit@example.co.th" }
+  ],
+  "authorizingParty": {
+    "oidcSub": "TBD-after-OIDC-config",
+    "webAuthnCredId": "TBD-after-WebAuthn-enrollment"
+  },
+  "signature": {
+    "alg": "ES256",
+    "jws": "TBD-replace-with-real-JWS",
+    "signedAt": "2026-04-30T12:00:00Z"
+  }
+}

@@ -1,0 +1,35 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ .Release.Name }}-vuln-intel
+spec:
+  schedule: "30 1 * * *"   # daily 01:30 UTC (08:30 Bangkok)
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 5
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app.kubernetes.io/name: autoscan
+            app.kubernetes.io/component: vuln-intel
+        spec:
+          serviceAccountName: {{ .Release.Name }}-sa
+          restartPolicy: OnFailure
+          securityContext:
+            {{- toYaml .Values.podSecurityContext | nindent 12 }}
+          containers:
+            - name: ingest
+              image: {{ include "autoscan.image" (merge (dict "component" "vuln-intel") .) }}
+              env:
+                - name: VULN_INTEL_DB_URL
+                  value: {{ .Values.postgres.url | quote }}
+                - name: NVD_API_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: nvd-api-key
+                      key: NVD_API_KEY
+                      optional: true
+              securityContext:
+                {{- toYaml .Values.containerSecurityContext | nindent 16 }}
