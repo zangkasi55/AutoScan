@@ -1,0 +1,75 @@
+name: Deploy Apps (Helm to AKS)
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        required: true
+        default: dev
+        type: choice
+        options: [dev, staging, prod]
+      tag:
+        description: Image tag (default = git sha)
+        required: false
+        default: ''
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  AZURE_SUBSCRIPTION_ID: 0fdda5f4-0853-4336-8f41-0370176387f5
+  AZURE_RG: AutoScan
+  ENVIRONMENT: ${{ github.event.inputs.environment }}
+  TAG: ${{ github.event.inputs.tag != '' && github.event.inputs.tag || github.sha }}
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        component: [orchestrator, agent-runner, ledger, api, web]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ env.AZURE_SUBSCRIPTION_ID }}
+      - name: Resolve ACR
+        id: acr
+        run: |
+          ACR=$(az acr list -g $AZURE_RG --query "[0].loginServer" -o tsv)
+          echo "login_server=$ACR" >> $GITHUB_OUTPUT
+      - name: ACR login
+        run: az acr login --name $(echo "${{ steps.acr.outputs.login_server }}" | cut -d. -f1)
+      - name: Build & push
+        run: |
+          docker build -t ${{ steps.acr.outputs.login_server }}/autoscan/${{ matrix.component }}:$TAG \
+            -f apps/${{ matrix.component }}/Dockerfile apps/${{ matrix.component }}
+          docker push ${{ steps.acr.outputs.login_server }}/autoscan/${{ matrix.component }}:$TAG
+
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ env.AZURE_SUBSCRIPTION_ID }}
+      - name: AKS credentials
+        run: |
+          AKS=$(az aks list -g $AZURE_RG --query "[0].name" -o tsv)
+          az aks get-credentials -g $AZURE_RG -n $AKS --overwrite-existing
+      - uses: azure/setup-helm@v4
+      - name: Helm upgrade
+        run: |
+          ACR=$(az acr list -g $AZURE_RG --query "[0].loginServer" -o tsv)
+          helm upgrade --install autoscan infra/helm/autoscan \
+            --namespace autoscan --create-namespace \
+            --set image.registry=$ACR \
+            --set image.tag=$TAG \
+            --set environment=$ENVIRONMENT \
+            --wait --timeout 10m

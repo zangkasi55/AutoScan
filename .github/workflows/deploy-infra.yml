@@ -1,0 +1,88 @@
+name: Deploy Infrastructure (Azure / RG AutoScan)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'infra/azure/**'
+      - '.github/workflows/deploy-infra.yml'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Environment (dev / staging / prod)
+        required: true
+        default: dev
+        type: choice
+        options: [dev, staging, prod]
+      whatif:
+        description: Run what-if only (no deployment)
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  AZURE_SUBSCRIPTION_ID: 0fdda5f4-0853-4336-8f41-0370176387f5
+  AZURE_LOCATION: eastus
+  ENVIRONMENT: ${{ github.event.inputs.environment || 'dev' }}
+
+jobs:
+  deploy:
+    name: Deploy Bicep (subscription scope)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Azure login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ env.AZURE_SUBSCRIPTION_ID }}
+
+      - name: What-if
+        if: ${{ github.event.inputs.whatif == 'true' }}
+        uses: azure/cli@v2
+        with:
+          azcliversion: latest
+          inlineScript: |
+            az deployment sub what-if \
+              --name autoscan-${{ env.ENVIRONMENT }}-${{ github.run_number }} \
+              --location ${{ env.AZURE_LOCATION }} \
+              --template-file ./infra/azure/main.bicep \
+              --parameters ./infra/azure/main.parameters.json \
+              --parameters environment=${{ env.ENVIRONMENT }}
+
+      - name: Deploy
+        if: ${{ github.event.inputs.whatif != 'true' }}
+        uses: azure/cli@v2
+        with:
+          azcliversion: latest
+          inlineScript: |
+            az deployment sub create \
+              --name autoscan-${{ env.ENVIRONMENT }}-${{ github.run_number }} \
+              --location ${{ env.AZURE_LOCATION }} \
+              --template-file ./infra/azure/main.bicep \
+              --parameters ./infra/azure/main.parameters.json \
+              --parameters environment=${{ env.ENVIRONMENT }} \
+              --output table
+
+      - name: Capture outputs
+        if: ${{ github.event.inputs.whatif != 'true' }}
+        uses: azure/cli@v2
+        with:
+          azcliversion: latest
+          inlineScript: |
+            az deployment sub show \
+              --name autoscan-${{ env.ENVIRONMENT }}-${{ github.run_number }} \
+              --query properties.outputs > outputs.json
+            cat outputs.json
+
+      - uses: actions/upload-artifact@v4
+        if: ${{ github.event.inputs.whatif != 'true' }}
+        with:
+          name: deployment-outputs-${{ env.ENVIRONMENT }}
+          path: outputs.json

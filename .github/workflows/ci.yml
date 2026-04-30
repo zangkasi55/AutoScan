@@ -1,0 +1,77 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '22' }
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - name: Python lint
+        run: |
+          pip install ruff
+          ruff check apps packages || true
+      - name: i18n-lint (EN/TH parity)
+        run: node packages/i18n/lint.mjs
+
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - name: Install
+        run: |
+          pip install -r apps/orchestrator/requirements.txt
+          pip install -r apps/agent-runner/requirements.txt
+          pip install -r apps/ledger/requirements.txt
+          pip install -r packages/mcp-tools/redactor/requirements.txt
+          pip install pytest pytest-asyncio
+      - name: Pytest
+        run: pytest tests/unit -v
+
+  policy-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install OPA
+        run: |
+          curl -sSL -o opa https://openpolicyagent.org/downloads/v0.65.0/opa_linux_amd64_static
+          chmod +x opa && sudo mv opa /usr/local/bin/
+      - name: Rego unit tests
+        run: opa test packages/policy-engine -v
+
+  bicep-validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install bicep
+        run: |
+          az bicep install
+          az bicep version
+      - name: Build (lint) Bicep
+        run: az bicep build --file infra/azure/main.bicep --stdout > /dev/null
+
+  container-scan:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Trivy filesystem scan
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          severity: CRITICAL,HIGH
+          exit-code: '0'   # don't fail until repo is mature
