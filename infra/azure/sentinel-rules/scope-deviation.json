@@ -1,0 +1,17 @@
+{
+  "displayName": "AVS — Authorization gate denied (scope deviation)",
+  "description": "Triggered when an AutoScan MCP server logs a policy_denied event. Per PRD §9 this should be 0 except for tests. Investigate immediately.",
+  "severity": "High",
+  "enabled": true,
+  "queryFrequency": "PT5M",
+  "queryPeriod": "PT5M",
+  "triggerOperator": "GreaterThan",
+  "triggerThreshold": 0,
+  "tactics": ["InitialAccess", "Discovery"],
+  "techniques": ["T1595"],
+  "query": "AppTraces | where AppRoleName startswith 'autoscan-' | where Message contains 'deny.' | extend reasons = tostring(Properties.deny_reasons) | project TimeGenerated, AppRoleName, Message, reasons",
+  "incidentConfiguration": {
+    "createIncident": true,
+    "groupingConfiguration": { "enabled": true, "lookbackDuration": "PT15M", "matchingMethod": "AllEntities" }
+  }
+}
