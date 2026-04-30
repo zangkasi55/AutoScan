@@ -1,0 +1,94 @@
+{{- range tuple "api" "web" "orchestrator" "agent-runner" "evidence-mcp" "policy-mcp" "nmap-mcp" "nuclei-mcp" "prowler-mcp" -}}
+{{- $component := . -}}
+{{- $key := $component | replace "-" "" -}}
+{{- $cfg := index $.Values.components $key -}}
+{{- if and $cfg $cfg.enabled }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $.Release.Name }}-{{ $component }}
+  labels:
+    {{- include "autoscan.labels" (merge (dict "component" $component) $) | nindent 4 }}
+spec:
+  replicas: {{ default 1 $cfg.replicas }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: autoscan
+      app.kubernetes.io/component: {{ $component }}
+      app.kubernetes.io/instance: {{ $.Release.Name }}
+  template:
+    metadata:
+      labels:
+        {{- include "autoscan.labels" (merge (dict "component" $component) $) | nindent 8 }}
+    spec:
+      serviceAccountName: {{ $.Release.Name }}-sa
+      securityContext:
+        {{- toYaml $.Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ $component }}
+          image: {{ include "autoscan.image" (merge (dict "component" $component) $) }}
+          imagePullPolicy: {{ $.Values.image.pullPolicy }}
+          ports:
+            - containerPort: 8080
+          env:
+            - name: ENVIRONMENT
+              value: {{ $.Values.environment }}
+            - name: EVIDENCE_DB_URL
+              value: {{ $.Values.postgres.url | quote }}
+            - name: AZURE_OPENAI_ENDPOINT
+              value: {{ $.Values.azureOpenAI.endpoint | quote }}
+            - name: AZURE_OPENAI_API_VERSION
+              value: {{ $.Values.azureOpenAI.apiVersion | quote }}
+            - name: AZURE_TENANT_ID
+              value: {{ $.Values.workloadIdentity.tenantId | quote }}
+            - name: POLICY_MCP_URL
+              value: "http://{{ $.Release.Name }}-policy-mcp:8080"
+            - name: EVIDENCE_MCP_URL
+              value: "http://{{ $.Release.Name }}-evidence-mcp:8080"
+            - name: NMAP_MCP_URL
+              value: "http://{{ $.Release.Name }}-nmap-mcp:8080"
+            - name: NUCLEI_MCP_URL
+              value: "http://{{ $.Release.Name }}-nuclei-mcp:8080"
+            - name: PROWLER_MCP_URL
+              value: "http://{{ $.Release.Name }}-prowler-mcp:8080"
+            {{- if $.Values.anthropic.apiKeySecret }}
+            - name: ANTHROPIC_API_KEY
+              valueFrom:
+                secretKeyRef: { name: {{ $.Values.anthropic.apiKeySecret }}, key: ANTHROPIC_API_KEY }
+            {{- end }}
+          livenessProbe:
+            httpGet: { path: /health, port: 8080 }
+            initialDelaySeconds: 10
+          readinessProbe:
+            httpGet: { path: /health, port: 8080 }
+          resources:
+            {{- toYaml (default (dict) $cfg.resources) | nindent 12 }}
+          securityContext:
+            {{- toYaml $.Values.containerSecurityContext | nindent 12 }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $.Release.Name }}-{{ $component }}
+  labels:
+    {{- include "autoscan.labels" (merge (dict "component" $component) $) | nindent 4 }}
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app.kubernetes.io/name: autoscan
+    app.kubernetes.io/component: {{ $component }}
+    app.kubernetes.io/instance: {{ $.Release.Name }}
+{{- end }}
+{{- end }}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ .Release.Name }}-sa
+  {{- if .Values.workloadIdentity.enabled }}
+  annotations:
+    azure.workload.identity/client-id: {{ .Values.workloadIdentity.clientId | quote }}
+  {{- end }}

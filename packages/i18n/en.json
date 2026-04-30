@@ -1,0 +1,81 @@
+{
+  "common": {
+    "appName": "AutoScan",
+    "tagline": "Autonomous defenders. Verifiable proof.",
+    "languageToggle": "EN",
+    "actions": {
+      "save": "Save",
+      "cancel": "Cancel",
+      "start": "Start scan",
+      "pause": "Pause",
+      "resume": "Resume",
+      "abort": "Abort",
+      "sign": "Sign",
+      "export": "Export",
+      "pushToJira": "Push to Jira"
+    }
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "scopes":    "Scopes",
+    "scans":     "Scans",
+    "findings":  "Findings",
+    "reports":   "Reports",
+    "settings":  "Settings"
+  },
+  "dashboard": {
+    "title":               "Dashboard",
+    "criticalChains":      "Critical chains",
+    "openCriticals":       "Open criticals",
+    "kevListedOpen":       "KEV-listed open",
+    "fpRate":              "False-positive rate",
+    "topChains":           "Top chains",
+    "agentFleet":          "Agent fleet health"
+  },
+  "scope": {
+    "title":               "Rules of Engagement",
+    "uploadDocument":      "Upload scope document",
+    "scopeCidrs":          "In-scope CIDRs",
+    "exclusions":          "Exclusions",
+    "testCategories":      "Allowed test categories",
+    "timeWindow":          "Time window",
+    "destructiveOptIns":   "Per-asset destructive opt-ins",
+    "signers":             "Authorizing parties",
+    "awaitingSignature":   "Awaiting signature",
+    "signed":              "Signed and anchored"
+  },
+  "scan": {
+    "title":               "Live timeline",
+    "agents": {
+      "recon":             "Recon",
+      "vuln":              "Vulnerability",
+      "exploitReason":     "Exploit Reasoning",
+      "critic":            "Critic",
+      "reportWriter":      "Report Writer"
+    },
+    "policyBadge": {
+      "allowed":           "in-scope",
+      "denied":            "refused",
+      "paused":            "paused"
+    }
+  },
+  "finding": {
+    "severity": {
+      "critical":          "Critical",
+      "high":              "High",
+      "medium":            "Medium",
+      "low":               "Low",
+      "info":              "Informational"
+    },
+    "headlineScore":       "Score",
+    "evidence":            "Evidence",
+    "remediation":         "Remediation",
+    "markFalsePositive":   "Mark false positive",
+    "snooze":              "Snooze"
+  },
+  "errors": {
+    "scanNotStarted":      "Scan cannot start without a signed RoE.",
+    "outOfScope":          "Target is out of scope.",
+    "destructiveBlocked":  "Destructive check requires per-asset opt-in and step-up MFA."
+  }
+}

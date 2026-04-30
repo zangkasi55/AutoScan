@@ -4,7 +4,6 @@ param projectName string
 param environment string
 param tags object
 param workspaceId string
-param workloadIdentityClientId string
 param workloadIdentityResourceId string
 param acrId string
 param kubernetesVersion string = '1.30.5'

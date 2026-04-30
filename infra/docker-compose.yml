@@ -1,0 +1,62 @@
+# Compose for local development.
+# Production deployment uses Helm on AKS; see infra/helm/autoscan.
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: avsadmin
+      POSTGRES_PASSWORD: avsadmin
+      POSTGRES_DB: evidence
+    ports: ["5432:5432"]
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./db/migrations:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U avsadmin"]
+      interval: 5s
+
+  policy-mcp:
+    build:
+      context: .
+      dockerfile: packages/mcp-tools/policy-mcp/Dockerfile
+    ports: ["8001:8080", "8181:8181"]
+
+  evidence-mcp:
+    build:
+      context: .
+      dockerfile: packages/mcp-tools/evidence-mcp/Dockerfile
+    environment:
+      EVIDENCE_DB_URL: postgres://avsadmin:avsadmin@postgres:5432/evidence?sslmode=disable
+    depends_on:
+      postgres: { condition: service_healthy }
+    ports: ["8002:8080"]
+
+  nmap-mcp:
+    build:
+      context: .
+      dockerfile: packages/mcp-tools/nmap-mcp/Dockerfile
+    environment:
+      POLICY_MCP_URL: http://policy-mcp:8080
+      EVIDENCE_MCP_URL: http://evidence-mcp:8080
+    depends_on: [policy-mcp, evidence-mcp]
+    ports: ["8003:8080"]
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    environment:
+      EVIDENCE_DB_URL: postgres://avsadmin:avsadmin@postgres:5432/evidence?sslmode=disable
+      AZURE_TENANT_ID: ${AZURE_TENANT_ID:-}
+    depends_on:
+      postgres: { condition: service_healthy }
+    ports: ["8080:8080"]
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    ports: ["5173:8080"]
+
+volumes:
+  pgdata: {}

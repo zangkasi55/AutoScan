@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+*.egg-info/
+
+# Node
+node_modules/
+dist/
+.vite/
+
+# Go
+*.exe
+bin/
+
+# IDE
+.vscode/
+.idea/
+
+# Local env
+.env
+.env.local
+
+# Bicep build artifacts
+*.bicep.json
+
+# Secrets
+*.pem
+*.key
+fic*.json

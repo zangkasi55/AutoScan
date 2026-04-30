@@ -182,7 +182,6 @@ module aks 'modules/aks.bicep' = {
     environment: environment
     tags: tags
     workspaceId: logs.outputs.workspaceId
-    workloadIdentityClientId: identity.outputs.clientId
     workloadIdentityResourceId: identity.outputs.resourceId
     acrId: acr.outputs.acrId
   }

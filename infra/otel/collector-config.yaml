@@ -1,0 +1,45 @@
+# OpenTelemetry collector configuration for AutoScan.
+# Exports: traces → Application Insights, metrics → Log Analytics, logs → Log Analytics.
+receivers:
+  otlp:
+    protocols:
+      grpc: { endpoint: 0.0.0.0:4317 }
+      http: { endpoint: 0.0.0.0:4318 }
+
+processors:
+  batch:
+    send_batch_size: 1024
+    timeout: 5s
+  memory_limiter:
+    check_interval: 1s
+    limit_percentage: 80
+    spike_limit_percentage: 25
+  attributes/add_env:
+    actions:
+      - key: deployment.environment
+        action: upsert
+        value: ${env:ENVIRONMENT}
+      - key: service.namespace
+        action: upsert
+        value: autoscan
+
+exporters:
+  azuremonitor:
+    instrumentation_key: ${env:APPINSIGHTS_INSTRUMENTATIONKEY}
+  debug:
+    verbosity: basic
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [memory_limiter, attributes/add_env, batch]
+      exporters: [azuremonitor]
+    metrics:
+      receivers: [otlp]
+      processors: [memory_limiter, attributes/add_env, batch]
+      exporters: [azuremonitor]
+    logs:
+      receivers: [otlp]
+      processors: [memory_limiter, attributes/add_env, batch]
+      exporters: [azuremonitor]

@@ -1,0 +1,81 @@
+environment: dev
+
+image:
+  registry: ""              # set to your ACR login server, e.g. autoscandevacr<hash>.azurecr.io
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+# Workload identity (Azure AD) — populated after Bicep deploy.
+workloadIdentity:
+  enabled: true
+  clientId: ""              # outputs.managedIdentityClientId
+  tenantId: ""
+
+postgres:
+  url: ""                   # postgres://avsadmin:***@autoscan-dev-pg-xxx.postgres.database.azure.com/evidence?sslmode=require
+
+azureOpenAI:
+  endpoint: ""              # outputs.openAIEndpoint
+  apiVersion: "2024-10-01-preview"
+
+anthropic:
+  apiKeySecret: ""          # name of K8s Secret with key ANTHROPIC_API_KEY (or via Key Vault CSI)
+
+components:
+  api:
+    enabled: true
+    replicas: 2
+    resources: { requests: {cpu: 200m, memory: 256Mi}, limits: {cpu: 1000m, memory: 512Mi} }
+  web:
+    enabled: true
+    replicas: 2
+    resources: { requests: {cpu: 100m, memory: 128Mi}, limits: {cpu: 500m, memory: 256Mi} }
+  orchestrator:
+    enabled: true
+    replicas: 1
+    resources: { requests: {cpu: 500m, memory: 512Mi}, limits: {cpu: 2000m, memory: 2Gi} }
+  agentRunner:
+    enabled: true
+    replicas: 2
+    resources: { requests: {cpu: 500m, memory: 512Mi}, limits: {cpu: 2000m, memory: 2Gi} }
+  evidenceMcp:
+    enabled: true
+    replicas: 2
+  policyMcp:
+    enabled: true
+    replicas: 2
+  nmapMcp:
+    enabled: true
+    replicas: 1
+  nucleiMcp:
+    enabled: true
+    replicas: 1
+  prowlerMcp:
+    enabled: true
+    replicas: 1
+
+# Pod-security defaults (matches NIST AI 600-1 hardening)
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 65532
+  fsGroup: 65532
+  seccompProfile: { type: RuntimeDefault }
+
+containerSecurityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  capabilities: { drop: [ALL] }
+
+# Sandbox node pool — matches AKS 'sandbox' pool taint/labels
+sandboxNodePool:
+  nodeSelector: { workload: sandbox }
+  tolerations:
+    - key: workload
+      operator: Equal
+      value: sandbox
+      effect: NoSchedule
+
+ingress:
+  enabled: true
+  className: webapprouting.kubernetes.azure.com
+  host: autoscan.example.com    # override per environment

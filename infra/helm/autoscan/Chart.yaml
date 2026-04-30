@@ -1,0 +1,11 @@
+apiVersion: v2
+name: autoscan
+description: Agentic Vulnerability Scanner (Sentry-AI) — control plane + agents
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+icon: https://raw.githubusercontent.com/zangkasi55/AutoScan/main/brand/logo-mark.svg
+home: https://github.com/zangkasi55/AutoScan
+maintainers:
+  - name: AutoScan Team
+keywords: [security, vulnerability, agent, llm, mcp]

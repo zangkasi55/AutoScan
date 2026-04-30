@@ -1,0 +1,81 @@
+{
+  "common": {
+    "appName": "AutoScan",
+    "tagline": "เอเจนต์ไซเบอร์อัตโนมัติ. หลักฐานพิสูจน์ได้.",
+    "languageToggle": "ไทย",
+    "actions": {
+      "save": "บันทึก",
+      "cancel": "ยกเลิก",
+      "start": "เริ่มสแกน",
+      "pause": "หยุดชั่วคราว",
+      "resume": "ทำต่อ",
+      "abort": "ยกเลิกการสแกน",
+      "sign": "ลงนาม",
+      "export": "ส่งออก",
+      "pushToJira": "ส่งไป Jira"
+    }
+  },
+  "nav": {
+    "dashboard": "แดชบอร์ด",
+    "scopes":    "ขอบเขต",
+    "scans":     "การสแกน",
+    "findings":  "ช่องโหว่ที่พบ",
+    "reports":   "รายงาน",
+    "settings":  "ตั้งค่า"
+  },
+  "dashboard": {
+    "title":               "แดชบอร์ด",
+    "criticalChains":      "ห่วงโซ่ระดับวิกฤต",
+    "openCriticals":       "ช่องโหว่วิกฤตที่ยังไม่ปิด",
+    "kevListedOpen":       "ที่อยู่ในรายการ CISA KEV",
+    "fpRate":              "อัตราผลบวกลวง",
+    "topChains":           "ห่วงโซ่อันตรายสูงสุด",
+    "agentFleet":          "สถานะเอเจนต์ทั้งหมด"
+  },
+  "scope": {
+    "title":               "เอกสารอนุญาตการตรวจ (RoE)",
+    "uploadDocument":      "อัปโหลดเอกสารขอบเขต",
+    "scopeCidrs":          "CIDR ในขอบเขต",
+    "exclusions":          "รายการที่ยกเว้น",
+    "testCategories":      "ประเภทการตรวจที่อนุญาต",
+    "timeWindow":          "ช่วงเวลาดำเนินการ",
+    "destructiveOptIns":   "การยินยอมตรวจเชิงรุกรายอุปกรณ์",
+    "signers":             "ผู้มีอำนาจลงนาม",
+    "awaitingSignature":   "รอการลงนาม",
+    "signed":              "ลงนามและบันทึกหลักฐานแล้ว"
+  },
+  "scan": {
+    "title":               "ไทม์ไลน์เรียลไทม์",
+    "agents": {
+      "recon":             "เอเจนต์สำรวจ",
+      "vuln":              "เอเจนต์ตรวจช่องโหว่",
+      "exploitReason":     "เอเจนต์วิเคราะห์การโจมตี",
+      "critic":            "เอเจนต์ตรวจสอบซ้ำ",
+      "reportWriter":      "เอเจนต์เขียนรายงาน"
+    },
+    "policyBadge": {
+      "allowed":           "อยู่ในขอบเขต",
+      "denied":            "ปฏิเสธ",
+      "paused":            "หยุดชั่วคราว"
+    }
+  },
+  "finding": {
+    "severity": {
+      "critical":          "วิกฤต",
+      "high":              "สูง",
+      "medium":            "ปานกลาง",
+      "low":               "ต่ำ",
+      "info":              "เพื่อทราบ"
+    },
+    "headlineScore":       "คะแนน",
+    "evidence":            "หลักฐาน",
+    "remediation":         "วิธีแก้ไข",
+    "markFalsePositive":   "ทำเครื่องหมายเป็นผลบวกลวง",
+    "snooze":              "เลื่อนการตรวจ"
+  },
+  "errors": {
+    "scanNotStarted":      "ไม่สามารถเริ่มสแกนได้หากไม่มี RoE ที่ลงนามแล้ว",
+    "outOfScope":          "เป้าหมายอยู่นอกขอบเขตที่อนุญาต",
+    "destructiveBlocked":  "การตรวจเชิงรุกต้องมีการยินยอมรายอุปกรณ์และยืนยันตัวตนเพิ่มเติม"
+  }
+}

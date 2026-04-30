@@ -1,0 +1,22 @@
+@import "tailwindcss";
+
+/* Brand tokens — single source of truth from brand/ci-guide.md §8 */
+@theme {
+  --color-avs-ink: #0B1220;
+  --color-avs-paper: #F7F9FC;
+  --color-avs-shield: #1F6FEB;
+  --color-avs-pulse: #22D3EE;
+  --color-sev-critical: #DC2626;
+  --color-sev-high: #EA580C;
+  --color-sev-medium: #D97706;
+  --color-sev-low: #65A30D;
+  --color-sev-info: #0EA5E9;
+  --color-ok-500: #10B981;
+  --color-warn-500: #F59E0B;
+  --color-danger-500: #EF4444;
+  --font-sans: 'Inter', 'Sarabun', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Cascadia Mono', ui-monospace, monospace;
+}
+
+html, body, #root { height: 100%; }
+body { font-family: var(--font-sans); }

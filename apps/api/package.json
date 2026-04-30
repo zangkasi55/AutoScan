@@ -1,0 +1,31 @@
+{
+  "name": "@autoscan/api",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "src/server.ts",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "start": "node --import tsx src/server.ts",
+    "build": "tsc -p ."
+  },
+  "dependencies": {
+    "@fastify/cors": "^10.0.1",
+    "@fastify/jwt": "^9.0.1",
+    "@fastify/oauth2": "^8.1.0",
+    "@fastify/swagger": "^9.4.0",
+    "@fastify/websocket": "^11.0.1",
+    "fastify": "^5.0.0",
+    "fastify-plugin": "^5.0.1",
+    "jose": "^5.9.6",
+    "pino": "^9.5.0",
+    "pg": "^8.13.1",
+    "zod": "^3.23.8",
+    "@autoscan/shared-schemas": "file:../../packages/shared-schemas"
+  },
+  "devDependencies": {
+    "@types/node": "^22.9.0",
+    "@types/pg": "^8.11.10",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3"
+  }
+}
