@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>AVS · Attack Chain Detail</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="assets/styles.css" />
+<style>
+  .chain-graph {
+    background: linear-gradient(180deg, var(--gray-50), white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    padding: 24px;
+    overflow-x: auto;
+  }
+  .chain-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+    align-items: center;
+  }
+  .node {
+    border: 2px solid var(--gray-300);
+    border-radius: 12px;
+    padding: 12px;
+    background: white;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+    min-height: 110px;
+  }
+  .node .icon { font-size: 24px; margin-bottom: 6px; }
+  .node .label { font-weight: 700; font-size: 13px; }
+  .node .meta { font-size: 11px; color: var(--gray-500); margin-top: 4px; }
+  .node.crit { border-color: var(--sev-critical); background: rgba(220,38,38,.04); }
+  .node.high { border-color: var(--sev-high); background: rgba(234,88,12,.04); }
+  .node.med  { border-color: var(--sev-medium); background: rgba(217,119,6,.04); }
+  .arrow {
+    text-align: center;
+    color: var(--avs-shield);
+    font-weight: 700;
+    font-family: var(--font-mono);
+    font-size: 13px;
+  }
+  .arrow .verb { font-size: 10px; color: var(--gray-500); display: block; margin-top: 2px;}
+  .step-card {
+    border-left: 3px solid var(--avs-shield);
+    padding: 10px 14px;
+    background: var(--gray-50);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    margin-bottom: 10px;
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand">
+      <svg class="brand-mark" viewBox="0 0 64 64"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#1F6FEB"/><stop offset="100%" stop-color="#22D3EE"/></linearGradient></defs><path d="M32 2 L60 12 V36 C60 50 47 61 32 64 C17 61 4 50 4 36 V12 Z" fill="url(#g)"/><g fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><circle cx="20" cy="26" r="3"/><circle cx="44" cy="26" r="3"/><circle cx="32" cy="46" r="3"/><line x1="20" y1="26" x2="44" y2="26"/><line x1="20" y1="26" x2="32" y2="46"/><line x1="44" y1="26" x2="32" y2="46"/></g></svg>
+      <span>AVS</span>
+    </div>
+    <nav>
+      <a href="01-dashboard.html">Dashboard</a>
+      <a href="02-scope.html">Scopes</a>
+      <a href="03-live-timeline.html">Scans</a>
+      <a href="04-findings.html" class="active">Findings</a>
+      <a href="06-report.html">Reports</a>
+      <a href="07-settings.html">Settings</a>
+    </nav>
+    <div class="right">
+      <span class="pill">● 5 agents online</span>
+      <span style="font-size:13px;opacity:.8;">SCB Tech · TH-Central-1</span>
+      <div class="avatar">PT</div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <h4>This chain</h4>
+      <ul>
+        <li><a href="#" class="active">Overview</a></li>
+        <li><a href="#">Step-by-step evidence</a></li>
+        <li><a href="#">Business impact</a></li>
+        <li><a href="#">Remediation</a></li>
+        <li><a href="#">Audit trail</a></li>
+      </ul>
+      <h4>Other chains</h4>
+      <ul>
+        <li><a href="#">#2 WP→AD→DC</a></li>
+        <li><a href="#">#3 S3 PII</a></li>
+        <li><a href="#">#4 Entra app secret</a></li>
+      </ul>
+    </aside>
+
+    <main class="content">
+      <div class="page-title">
+        <div>
+          <a href="04-findings.html" class="muted text-sm">← back to findings</a>
+          <h1>Chain #1 · SSRF → IMDS → IAM → S3 PII</h1>
+          <span class="subtitle-th">เส้นทาง #1 — SSRF บน API สาธารณะนำไปสู่การรั่วของข้อมูลลูกค้า</span>
+        </div>
+        <div class="flex gap-2">
+          <span class="score"><span class="num">94</span><span class="label">CHAIN</span></span>
+          <button class="btn">Push to Jira</button>
+          <button class="btn primary">Generate remediation PR</button>
+        </div>
+      </div>
+
+      <!-- Top stripe -->
+      <div class="card card-pad mb-4">
+        <div class="grid-4">
+          <div><div class="muted text-sm">Severity</div><div><span class="sev critical">Critical</span></div></div>
+          <div><div class="muted text-sm">CISA KEV</div><div><span class="chip kev">in KEV</span></div></div>
+          <div><div class="muted text-sm">EPSS · SSVC</div><div><span class="chip">0.94</span> <span class="chip">act</span></div></div>
+          <div><div class="muted text-sm">Confidence</div><div><span class="chip ok">98% · Critic-corroborated</span></div></div>
+        </div>
+      </div>
+
+      <!-- GRAPH -->
+      <div class="chain-graph mb-4">
+        <div class="chain-row">
+          <div class="node crit"><div class="icon">🌐</div><div class="label">Public API</div><div class="meta">api.scbtech.example<br/>v1/uploads</div></div>
+          <div class="arrow">SSRF<span class="verb">CVE-2024-XXXX</span></div>
+          <div class="node high"><div class="icon">⚙️</div><div class="label">IMDS v1</div><div class="meta">169.254.169.254<br/>EC2 metadata</div></div>
+          <div class="arrow">creds<span class="verb">temp tokens</span></div>
+          <div class="node high"><div class="icon">🔑</div><div class="label">IAM role</div><div class="meta">edge-tasks<br/>over-permissive</div></div>
+        </div>
+        <div class="chain-row mt-3">
+          <div></div><div></div>
+          <div class="arrow" style="height:24px;line-height:24px;">↓</div>
+          <div></div><div></div>
+        </div>
+        <div class="chain-row mt-3">
+          <div></div>
+          <div class="node med"><div class="icon">📡</div><div class="label">RDS reachability</div><div class="meta">2 instances<br/>VPC peer reachable</div></div>
+          <div class="arrow">s3:GetObject<span class="verb">role grants ReadAll</span></div>
+          <div class="node crit"><div class="icon">🗄️</div><div class="label">S3 customer PII</div><div class="meta">218k objects<br/>citizen ID + phone</div></div>
+          <div></div>
+        </div>
+      </div>
+
+      <!-- Bilingual narrative -->
+      <div class="grid-2 mb-4">
+        <div class="card card-pad">
+          <h3>How this chain works · EN</h3>
+          <p style="font-size:14px;line-height:1.6;color:var(--gray-700);">A request handler at <code>POST /v1/uploads</code> accepts a user-supplied URL and fetches it server-side without validating the host. An attacker submits <code>http://169.254.169.254/latest/meta-data/iam/security-credentials/edge-tasks</code> and receives temporary AWS credentials for the <code>edge-tasks</code> IAM role. That role has <code>s3:GetObject</code> on <code>scb-edge-receipts</code>, a bucket containing 218,442 customer receipt PDFs with citizen ID and phone number in the OCR'd text layer. Critic agent independently re-derived the chain via an alternate proxy path and confirmed reachability.</p>
+        </div>
+        <div class="card card-pad">
+          <h3>กลไกการโจมตี · TH</h3>
+          <p style="font-size:14px;line-height:1.6;color:var(--gray-700);">ฟังก์ชัน <code>POST /v1/uploads</code> รับ URL จากผู้ใช้แล้วดึงข้อมูลจาก URL นั้นโดยไม่ตรวจสอบโฮสต์ ผู้โจมตีสามารถส่ง URL ของ IMDS (<code>169.254.169.254</code>) ทำให้ได้ credential ชั่วคราวของ IAM role <code>edge-tasks</code> ซึ่งมีสิทธิ์ <code>s3:GetObject</code> บน bucket <code>scb-edge-receipts</code> ที่เก็บไฟล์ใบเสร็จลูกค้า 218,442 ไฟล์ ซึ่งมีเลขบัตรประชาชนและเบอร์โทรศัพท์ใน OCR เอเจนต์ Critic ได้ทำการตรวจสอบซ้ำผ่านเส้นทางอื่นและยืนยันว่าโจมตีได้จริง</p>
+        </div>
+      </div>
+
+      <!-- Step-by-step -->
+      <div class="card card-pad mb-4">
+        <h3>Step-by-step evidence <span class="muted" style="font-weight:500;">· หลักฐานทีละขั้น</span></h3>
+        <div class="mt-3">
+          <div class="step-card">
+            <div class="bold">Step 1 · SSRF probe (evidence-only)</div>
+            <pre class="mono mt-2">POST /v1/uploads HTTP/1.1
+Host: api.scbtech.example
+Content-Type: application/json
+
+{"url":"http://avs-canary.example/marker-7c4a"}
+
+→ 200 OK · canary log shows fetch from 203.144.128.20
+→ Server-side request was issued. SSRF confirmed without hitting IMDS.</pre>
+            <div class="mt-2 flex gap-2"><span class="chip evd">evd-118</span><span class="chip warn">evidence-only</span><span class="chip">ZAP active scan</span></div>
+          </div>
+          <div class="step-card">
+            <div class="bold">Step 2 · IMDS reachability (sandboxed replay, not against live target)</div>
+            <pre class="mono mt-2">[Firecracker microVM clone of edge-gateway:1.4.2]
+$ curl http://169.254.169.254/latest/meta-data/iam/security-credentials/edge-tasks
+{"Code":"Success","AccessKeyId":"ASIA…","Token":"…","Expiration":"…"}</pre>
+            <div class="mt-2 flex gap-2"><span class="chip evd">evd-143</span><span class="chip warn">sandboxed</span></div>
+          </div>
+          <div class="step-card">
+            <div class="bold">Step 3 · IAM role analysis (read-only, against live target)</div>
+            <pre class="mono mt-2">aws iam get-role-policy --role-name edge-tasks --policy-name edge-tasks-inline
+{
+  "Statement": [
+    {"Effect":"Allow","Action":["s3:GetObject","s3:ListBucket"],
+     "Resource":["arn:aws:s3:::scb-edge-receipts","arn:aws:s3:::scb-edge-receipts/*"]}
+  ]
+}</pre>
+            <div class="mt-2 flex gap-2"><span class="chip evd">evd-144</span><span class="chip ok">read-only</span></div>
+          </div>
+          <div class="step-card">
+            <div class="bold">Step 4 · Critic re-derivation</div>
+            <p style="font-size:13px;color:var(--gray-700);margin:8px 0 0 0;">Critic agent (independent GPT-5.5 instance with no shared context) was given only the asset list and asked "what is the highest-impact reachable chain?" It independently produced the same SSRF→IMDS→IAM path. Independent corroboration raises confidence to 98%.</p>
+            <div class="mt-2 flex gap-2"><span class="chip evd">evd-145</span><span class="chip ok">corroborated</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Impact + remediation -->
+      <div class="grid-2 mb-4">
+        <div class="card card-pad">
+          <h3>Business impact <span class="muted" style="font-weight:500;">· ผลกระทบเชิงธุรกิจ</span></h3>
+          <ul style="font-size:13px;line-height:1.7;color:var(--gray-700);">
+            <li><strong>PDPA Art. 37</strong> — confirmed exfil of citizen ID + phone triggers 72-hour breach notification.</li>
+            <li><strong>BoT IT Risk Guideline §5</strong> — material weakness in customer-data control.</li>
+            <li><strong>PCI DSS 4.0 Req. 1.4 / 6.4.1</strong> — SSRF in scoped CDE flow.</li>
+            <li>Reputational: 218,442 customers affected if exfil were achieved.</li>
+            <li>Regulatory penalty exposure: up to THB 5,000,000 per PDPA breach event.</li>
+          </ul>
+        </div>
+        <div class="card card-pad">
+          <h3>Remediation <span class="muted" style="font-weight:500;">· การแก้ไข</span></h3>
+          <ol style="font-size:13px;line-height:1.7;color:var(--gray-700);">
+            <li><strong>Force IMDSv2</strong> on all EC2 in <code>edge-*</code> ASG — eliminates the metadata route entirely.</li>
+            <li><strong>Validate URL host</strong> in <code>/v1/uploads</code>: deny RFC1918 + link-local, allow-list of approved hosts.</li>
+            <li><strong>Tighten IAM</strong>: <code>edge-tasks</code> should not have <code>s3:GetObject</code> on the receipts bucket — split write-only role.</li>
+            <li><strong>Enable S3 Block Public Access</strong> + bucket-owner-enforced ACL on <code>scb-edge-receipts</code>.</li>
+            <li><strong>Add WAF rule</strong> to block link-local URLs in upload payloads.</li>
+          </ol>
+          <div class="mt-3 flex gap-2"><button class="btn primary">Generate Terraform PR</button><button class="btn">Open ServiceNow CHG</button></div>
+        </div>
+      </div>
+
+      <!-- Audit trail -->
+      <div class="card card-pad">
+        <h3>Audit trail <span class="muted" style="font-weight:500;">· หลักฐานหวงโซ่</span></h3>
+        <table class="tbl mt-3">
+          <thead><tr><th>Time (ICT)</th><th>Actor</th><th>Action</th><th>Evidence</th><th>Ledger anchor</th></tr></thead>
+          <tbody>
+            <tr><td>17:51:44</td><td>vuln-agent</td><td>nuclei probe</td><td>evd-58</td><td><span class="chip">root:b41c…3f7a · idx 58</span></td></tr>
+            <tr><td>18:08:55</td><td>vuln-agent</td><td>ZAP SSRF probe (evidence-only)</td><td>evd-118</td><td><span class="chip">root:b41c…3f7a · idx 118</span></td></tr>
+            <tr><td>18:13:48</td><td>exploit-agent</td><td>Firecracker sandbox replay</td><td>evd-143</td><td><span class="chip">root:b41c…3f7a · idx 143</span></td></tr>
+            <tr><td>18:13:55</td><td>critic-agent</td><td>Independent re-derivation</td><td>evd-145</td><td><span class="chip">root:b41c…3f7a · idx 145</span></td></tr>
+            <tr><td>18:14:11</td><td>orchestrator</td><td>Promoted to chain · severity = critical</td><td>evd-146</td><td><span class="chip evd">RFC 3161 anchored</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <div class="footer">
+    <span>This chain's evidence is hash-anchored. Tampering would invalidate the Merkle root.</span>
+    <span class="lang-toggle"><button class="active">EN</button><button>TH</button></span>
+  </div>
+</div>
+</body>
+</html>

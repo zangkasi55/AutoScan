@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>AVS · Scope &amp; RoE</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand">
+      <svg class="brand-mark" viewBox="0 0 64 64"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#1F6FEB"/><stop offset="100%" stop-color="#22D3EE"/></linearGradient></defs><path d="M32 2 L60 12 V36 C60 50 47 61 32 64 C17 61 4 50 4 36 V12 Z" fill="url(#g)"/><g fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><circle cx="20" cy="26" r="3"/><circle cx="44" cy="26" r="3"/><circle cx="32" cy="46" r="3"/><line x1="20" y1="26" x2="44" y2="26"/><line x1="20" y1="26" x2="32" y2="46"/><line x1="44" y1="26" x2="32" y2="46"/></g></svg>
+      <span>AVS</span>
+    </div>
+    <nav>
+      <a href="01-dashboard.html">Dashboard</a>
+      <a href="02-scope.html" class="active">Scopes</a>
+      <a href="03-live-timeline.html">Scans</a>
+      <a href="04-findings.html">Findings</a>
+      <a href="06-report.html">Reports</a>
+      <a href="07-settings.html">Settings</a>
+    </nav>
+    <div class="right">
+      <span class="pill">● 5 agents online</span>
+      <span style="font-size:13px;opacity:.8;">SCB Tech · TH-Central-1</span>
+      <div class="avatar">PT</div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <h4>Workspace</h4>
+      <ul>
+        <li><a href="01-dashboard.html">📊 Dashboard</a></li>
+        <li><a href="02-scope.html" class="active">🛡️ Scopes (RoE)</a></li>
+        <li><a href="03-live-timeline.html">🛰️ Active Scans</a></li>
+        <li><a href="04-findings.html">⚠️ Findings</a></li>
+        <li><a href="05-chain-detail.html">🔗 Attack Chains</a></li>
+        <li><a href="06-report.html">📑 Reports</a></li>
+      </ul>
+      <h4>Scope library</h4>
+      <ul>
+        <li><a href="#">Internet-facing prod</a></li>
+        <li><a href="#">Corp AD perimeter</a></li>
+        <li><a href="#">Mobile banking API</a></li>
+        <li><a href="#">+ create new</a></li>
+      </ul>
+    </aside>
+
+    <main class="content">
+      <div class="page-title">
+        <div>
+          <h1>Scope &amp; Rules of Engagement</h1>
+          <span class="subtitle-th">ขอบเขตและกฎการทดสอบ — authorization gate is enforced at runtime, not just on paper</span>
+        </div>
+        <div class="flex gap-2">
+          <button class="btn">Import RoE PDF</button>
+          <button class="btn">Save as draft</button>
+          <button class="btn primary">Sign &amp; activate</button>
+        </div>
+      </div>
+
+      <!-- Stepper -->
+      <div class="card card-pad mb-4">
+        <div class="flex gap-4 center" style="font-size:13px;">
+          <div class="flex gap-2 center"><span class="score" style="min-width:32px;padding:4px 8px;"><span class="num" style="font-size:14px;">1</span></span><strong>Identity</strong></div>
+          <div style="flex:1;height:2px;background:var(--avs-shield);"></div>
+          <div class="flex gap-2 center"><span class="score" style="min-width:32px;padding:4px 8px;"><span class="num" style="font-size:14px;">2</span></span><strong>Scope</strong></div>
+          <div style="flex:1;height:2px;background:var(--avs-shield);"></div>
+          <div class="flex gap-2 center"><span class="score" style="min-width:32px;padding:4px 8px;background:linear-gradient(135deg,var(--avs-shield),var(--avs-pulse));"><span class="num" style="font-size:14px;">3</span></span><strong>Test categories</strong></div>
+          <div style="flex:1;height:2px;background:var(--gray-200);"></div>
+          <div class="flex gap-2 center" style="opacity:.5;"><span class="score" style="min-width:32px;padding:4px 8px;background:var(--gray-300);"><span class="num" style="font-size:14px;">4</span></span><span>Sign</span></div>
+        </div>
+      </div>
+
+      <div class="grid-2 mb-4">
+        <!-- LEFT: Identity + Scope -->
+        <div>
+          <div class="card card-pad mb-4">
+            <h3>1. Authorizing parties <span class="muted" style="font-weight:500;">· ผู้อนุญาต</span></h3>
+            <div class="grid-2 mt-3">
+              <div>
+                <label class="muted text-sm">Asset owner</label>
+                <input type="text" value="Khun Pim Vasinwattana" disabled style="display:block;width:100%;margin-top:4px;padding:8px 10px;border:1px solid var(--gray-200);border-radius:6px;background:var(--gray-50);" />
+                <div class="muted text-sm mt-2">CISO · SCB Tech · OIDC subject <span class="chip">scb-corp/users/pim.v</span></div>
+              </div>
+              <div>
+                <label class="muted text-sm">Scanning party</label>
+                <input type="text" value="AVS · scb-corp tenant" disabled style="display:block;width:100%;margin-top:4px;padding:8px 10px;border:1px solid var(--gray-200);border-radius:6px;background:var(--gray-50);" />
+                <div class="muted text-sm mt-2">Workload identity <span class="chip">avs-scan-runner@scb-corp</span></div>
+              </div>
+            </div>
+            <div class="mt-3 flex gap-2 center">
+              <span class="chip ok">✓ DPO acknowledged · 2026-04-30 16:42 ICT</span>
+              <span class="chip ok">✓ Legal review attached · v3.1</span>
+            </div>
+          </div>
+
+          <div class="card card-pad mb-4">
+            <h3>2. Scope &amp; exclusions <span class="muted" style="font-weight:500;">· ขอบเขตและการยกเว้น</span></h3>
+            <div class="mt-3">
+              <label class="muted text-sm bold">In-scope CIDRs / hosts / cloud accounts</label>
+              <pre class="mono mt-2">203.144.128.0/24
+203.144.129.0/24
+api.scbtech.example
+sub:azure/scb-prod-eastasia (rg: scb-edge-*)
+sub:aws/scb-prod-apse1 (tag: env=prod, scope=external)</pre>
+            </div>
+            <div class="mt-3">
+              <label class="muted text-sm bold">Exclusions</label>
+              <pre class="mono mt-2">203.144.128.42/32     # legacy mainframe gateway — destructive checks forbidden
+*.staging.scbtech.example   # CI environment shared with vendor
+sub:aws/scb-prod-apse1 (tag: pii=customer-core)   # core banking, evidence-only
+</pre>
+            </div>
+            <div class="mt-3 flex gap-2 center">
+              <span class="chip kev">3 PDPA-restricted assets detected · auto-redaction enforced</span>
+              <span class="chip">218 in-scope assets resolved</span>
+            </div>
+          </div>
+
+          <div class="card card-pad">
+            <h3>3. Test categories <span class="muted" style="font-weight:500;">· ประเภทการทดสอบ</span></h3>
+            <table class="tbl mt-3">
+              <thead><tr><th>Category</th><th>Active probes</th><th>Destructive?</th><th>Toggle</th></tr></thead>
+              <tbody>
+                <tr><td class="bi"><span class="en">Recon &amp; surface mapping</span><span class="th">การสำรวจพื้นผิวโจมตี</span></td><td>Nmap, Masscan, DNS, Cert-T</td><td>No</td><td><span class="chip ok">enabled</span></td></tr>
+                <tr><td class="bi"><span class="en">CVE &amp; misconfiguration</span><span class="th">ช่องโหว่ CVE และการตั้งค่าผิด</span></td><td>Nuclei, Trivy, Prowler, ScoutSuite</td><td>No</td><td><span class="chip ok">enabled</span></td></tr>
+                <tr><td class="bi"><span class="en">Web app probing (auth-aware)</span><span class="th">การทดสอบเว็บแอปโดยมีการยืนยันตัวตน</span></td><td>ZAP active scan</td><td>Possibly</td><td><span class="chip warn">evidence-only</span></td></tr>
+                <tr><td class="bi"><span class="en">Cred / Kerberos / AD</span><span class="th">การทดสอบ Active Directory</span></td><td>BloodHound CE, Kerberoast</td><td>No</td><td><span class="chip ok">enabled</span></td></tr>
+                <tr><td class="bi"><span class="en">Exploit chain validation</span><span class="th">ตรวจสอบเส้นทางการโจมตีจริง</span></td><td>Sandbox replay, PoC harness</td><td>Yes</td><td><span class="chip warn">evidence-only</span></td></tr>
+                <tr><td class="bi"><span class="en">DoS / fuzz / brute</span><span class="th">การทดสอบเชิงรบกวน / ทำลาย</span></td><td>—</td><td>Yes</td><td><span class="chip" style="color:var(--danger-500);border-color:rgba(239,68,68,.3);background:rgba(239,68,68,.08);">forbidden</span></td></tr>
+              </tbody>
+            </table>
+            <div class="mt-3 muted text-sm">Per ADR-6, destructive checks default to <strong>evidence-only</strong>: AVS confirms exploitability via passive evidence and sandboxed replay, never against the live target unless the asset owner toggles a per-asset destructive opt-in.</div>
+          </div>
+        </div>
+
+        <!-- RIGHT: time window, contacts, signature -->
+        <div>
+          <div class="card card-pad mb-4">
+            <h3>4. Time window <span class="muted" style="font-weight:500;">· ช่วงเวลาทดสอบ</span></h3>
+            <div class="grid-2 mt-3">
+              <div>
+                <label class="muted text-sm">Window opens</label>
+                <input type="text" value="2026-05-02 00:00 ICT" disabled style="display:block;width:100%;margin-top:4px;padding:8px 10px;border:1px solid var(--gray-200);border-radius:6px;background:var(--gray-50);" />
+              </div>
+              <div>
+                <label class="muted text-sm">Window closes</label>
+                <input type="text" value="2026-05-09 23:59 ICT" disabled style="display:block;width:100%;margin-top:4px;padding:8px 10px;border:1px solid var(--gray-200);border-radius:6px;background:var(--gray-50);" />
+              </div>
+            </div>
+            <div class="muted text-sm mt-3">No-go windows: business hours 09:00–17:00 on the core-banking subnet · BoT month-end close 2026-04-30</div>
+          </div>
+
+          <div class="card card-pad mb-4">
+            <h3>5. Emergency contacts <span class="muted" style="font-weight:500;">· ผู้ติดต่อกรณีฉุกเฉิน</span></h3>
+            <table class="tbl mt-3">
+              <thead><tr><th>Role</th><th>Name</th><th>Channel</th></tr></thead>
+              <tbody>
+                <tr><td>Asset owner</td><td>Khun Pim V.</td><td>Teams · 02-xxx-xxxx</td></tr>
+                <tr><td>SOC on-call</td><td>SCB-CSIRT</td><td>csirt@scbtech.example</td></tr>
+                <tr><td>DPO</td><td>Khun Anan T.</td><td>dpo@scbtech.example</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="card card-pad">
+            <h3>6. Signature &amp; ledger anchor <span class="muted" style="font-weight:500;">· ลายเซ็นและหลักฐาน</span></h3>
+            <div class="mt-3">
+              <label class="muted text-sm bold">JWS preview</label>
+              <pre class="mono mt-2">{
+  "alg": "ES256",
+  "kid": "webauthn:scb-corp/pim.v/yubikey-5c",
+  "iat": 1745987234,
+  "exp": 1746591034,
+  "scope_hash": "sha256:b41c9...3f7a",
+  "tools_allowed": ["recon","cve","webapp","ad","chain"],
+  "destructive_optins": []
+}</pre>
+            </div>
+            <div class="mt-3 flex gap-2 center">
+              <button class="btn primary">🔐 Sign with WebAuthn</button>
+              <span class="muted text-sm">YubiKey 5C · touch to confirm</span>
+            </div>
+            <div class="mt-3 muted text-sm">Once signed, the RoE hash is anchored to the evidence ledger (Merkle root + RFC 3161 timestamp). Every agent action verifies against this hash before tool invocation.</div>
+            <div class="mt-3">
+              <span class="chip evd">ledger-tx-pending</span>
+              <span class="chip">RFC 3161 TSA · digicert-tsa-th</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div class="footer">
+    <span>AVS · Authorization is a product feature, not a checkbox.</span>
+    <span class="lang-toggle"><button class="active">EN</button><button>TH</button></span>
+  </div>
+</div>
+</body>
+</html>

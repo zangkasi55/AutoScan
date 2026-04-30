@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>AVS · Live Scan Timeline</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand">
+      <svg class="brand-mark" viewBox="0 0 64 64"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#1F6FEB"/><stop offset="100%" stop-color="#22D3EE"/></linearGradient></defs><path d="M32 2 L60 12 V36 C60 50 47 61 32 64 C17 61 4 50 4 36 V12 Z" fill="url(#g)"/><g fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><circle cx="20" cy="26" r="3"/><circle cx="44" cy="26" r="3"/><circle cx="32" cy="46" r="3"/><line x1="20" y1="26" x2="44" y2="26"/><line x1="20" y1="26" x2="32" y2="46"/><line x1="44" y1="26" x2="32" y2="46"/></g></svg>
+      <span>AVS</span>
+    </div>
+    <nav>
+      <a href="01-dashboard.html">Dashboard</a>
+      <a href="02-scope.html">Scopes</a>
+      <a href="03-live-timeline.html" class="active">Scans</a>
+      <a href="04-findings.html">Findings</a>
+      <a href="06-report.html">Reports</a>
+      <a href="07-settings.html">Settings</a>
+    </nav>
+    <div class="right">
+      <span class="pill">● 5 agents online</span>
+      <span style="font-size:13px;opacity:.8;">SCB Tech · TH-Central-1</span>
+      <div class="avatar">PT</div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <h4>Workspace</h4>
+      <ul>
+        <li><a href="01-dashboard.html">📊 Dashboard</a></li>
+        <li><a href="02-scope.html">🛡️ Scopes (RoE)</a></li>
+        <li><a href="03-live-timeline.html" class="active">🛰️ Active Scans</a></li>
+        <li><a href="04-findings.html">⚠️ Findings</a></li>
+        <li><a href="05-chain-detail.html">🔗 Attack Chains</a></li>
+        <li><a href="06-report.html">📑 Reports</a></li>
+      </ul>
+      <h4>Recent scans</h4>
+      <ul>
+        <li><a href="#" style="color:var(--avs-shield);">▶ scan-7c4a · running</a></li>
+        <li><a href="#">scan-7b91 · 2026-04-24</a></li>
+        <li><a href="#">scan-7a2e · 2026-04-17</a></li>
+      </ul>
+    </aside>
+
+    <main class="content">
+      <div class="page-title">
+        <div>
+          <h1>Live scan · scan-7c4a</h1>
+          <span class="subtitle-th">การสแกนสด — ดูทุกการกระทำของเอเจนต์แบบเรียลไทม์</span>
+        </div>
+        <div class="flex gap-2">
+          <button class="btn">⏸ Pause</button>
+          <button class="btn">⤓ Export trace</button>
+          <button class="btn danger">⏹ Abort</button>
+        </div>
+      </div>
+
+      <!-- Scan header card -->
+      <div class="card card-pad mb-4">
+        <div class="grid-4">
+          <div>
+            <div class="muted text-sm">Scope</div>
+            <div class="bold">internet-facing-prod</div>
+            <div class="muted text-sm">RoE hash · <span class="chip">sha256:b41c9...3f7a</span></div>
+          </div>
+          <div>
+            <div class="muted text-sm">Started</div>
+            <div class="bold">2026-04-30 17:42 ICT</div>
+            <div class="muted text-sm">elapsed 32m 14s · ETA ~28m</div>
+          </div>
+          <div>
+            <div class="muted text-sm">Status</div>
+            <div class="bold" style="color:var(--ok-500);">● Running · phase 3 of 5</div>
+            <div class="muted text-sm">phase: chain validation</div>
+          </div>
+          <div>
+            <div class="muted text-sm">Authorization</div>
+            <div class="bold">JWS verified</div>
+            <div class="muted text-sm">ledger-tx <span class="chip evd">avs-evd-7c4a-0001</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live counters -->
+      <div class="grid-4 mb-4">
+        <div class="kpi"><div class="label">Assets discovered</div><div class="value" style="font-size:24px;">218</div><div class="delta muted">+3 in last 60s</div></div>
+        <div class="kpi"><div class="label">Raw findings</div><div class="value" style="font-size:24px;">847</div><div class="delta muted">412 deduped</div></div>
+        <div class="kpi"><div class="label">Promoted by Critic</div><div class="value" style="font-size:24px;color:var(--avs-shield);">196</div><div class="delta muted">52% of unique</div></div>
+        <div class="kpi"><div class="label">Chains validated</div><div class="value" style="font-size:24px;color:var(--sev-critical);">7</div><div class="delta muted">12 candidates</div></div>
+      </div>
+
+      <!-- Lanes -->
+      <div class="lane">
+        <header>
+          <span class="agent-dot"></span>
+          <span>Orchestrator</span>
+          <span class="muted text-sm">Claude Opus 4.7 · planner</span>
+          <span class="muted text-sm" style="margin-left:auto;">28 active goals</span>
+        </header>
+        <div class="events">
+          <div class="ev"><span class="t">17:42:01</span><span class="tool">plan.create</span><span>Decompose scope into 6 phases · enqueue recon fan-out (218 assets)</span><span class="chip ok">policy ok</span><span class="chip evd">evd-1</span></div>
+          <div class="ev"><span class="t">18:05:14</span><span class="tool">plan.replan</span><span>Critic flagged FP cluster on 203.144.128.20–24 · narrow probe scope</span><span class="chip ok">policy ok</span><span class="chip evd">evd-87</span></div>
+          <div class="ev"><span class="t">18:13:22</span><span class="tool">chain.spawn</span><span>Promote candidate <em>SSRF→IMDS→IAM→RDS</em> to validation specialist</span><span class="chip ok">policy ok</span><span class="chip evd">evd-142</span></div>
+        </div>
+      </div>
+
+      <div class="lane">
+        <header>
+          <span class="agent-dot"></span>
+          <span>Recon specialist</span>
+          <span class="muted text-sm">GPT-5.5 · executor</span>
+          <span class="muted text-sm" style="margin-left:auto;">9,412 tool calls</span>
+        </header>
+        <div class="events">
+          <div class="ev"><span class="t">17:42:08</span><span class="tool">mcp.nmap.scan</span><span>203.144.128.0/24 · top-100 TCP · 218 hosts up</span><span class="chip ok">in-scope</span><span class="chip evd">evd-2</span></div>
+          <div class="ev"><span class="t">17:43:17</span><span class="tool">mcp.cert-transparency.lookup</span><span>scbtech.example · 47 subdomains discovered</span><span class="chip ok">in-scope</span><span class="chip evd">evd-9</span></div>
+          <div class="ev"><span class="t">17:48:02</span><span class="tool">mcp.aws.scout-suite</span><span>sub:aws/scb-prod-apse1 · 312 resources enumerated</span><span class="chip ok">read-only</span><span class="chip evd">evd-31</span></div>
+          <div class="ev"><span class="t">18:02:11</span><span class="tool">mcp.nmap.scan</span><span>203.144.128.42 · DENIED — exclusion list (legacy mainframe)</span><span class="chip" style="color:var(--danger-500);border-color:rgba(239,68,68,.3);background:rgba(239,68,68,.08);">policy stop</span><span class="chip evd">evd-77</span></div>
+        </div>
+      </div>
+
+      <div class="lane">
+        <header>
+          <span class="agent-dot"></span>
+          <span>Vuln specialist</span>
+          <span class="muted text-sm">GPT-5.5 · executor</span>
+          <span class="muted text-sm" style="margin-left:auto;">7,109 tool calls</span>
+        </header>
+        <div class="events">
+          <div class="ev"><span class="t">17:51:44</span><span class="tool">mcp.nuclei.run</span><span>api.scbtech.example · CVE-2024-49113 (LDAPNightmare) · confirmed</span><span class="chip kev">KEV</span><span class="chip evd">evd-58</span></div>
+          <div class="ev"><span class="t">17:53:22</span><span class="tool">mcp.trivy.image</span><span>edge-gateway:1.4.2 · 3 critical · 11 high</span><span class="chip ok">policy ok</span><span class="chip evd">evd-64</span></div>
+          <div class="ev"><span class="t">18:08:55</span><span class="tool">mcp.zap.activeScan</span><span>api.scbtech.example/v1/uploads · SSRF likely · evidence captured</span><span class="chip warn">evidence-only</span><span class="chip evd">evd-118</span></div>
+        </div>
+      </div>
+
+      <div class="lane">
+        <header>
+          <span class="agent-dot"></span>
+          <span>Exploit-Reasoning</span>
+          <span class="muted text-sm">Claude Opus 4.7 · validator</span>
+          <span class="muted text-sm" style="margin-left:auto;">3,221 tool calls</span>
+        </header>
+        <div class="events">
+          <div class="ev"><span class="t">18:13:48</span><span class="tool">sandbox.replay</span><span>SSRF→IMDS chain · validate via Firecracker microVM replica</span><span class="chip warn">sandboxed</span><span class="chip evd">evd-143</span></div>
+          <div class="ev"><span class="t">18:14:09</span><span class="tool">graph.update</span><span>Confirmed exploitable: api → IMDS v1 → IAM role <em>edge-tasks</em> → s3:GetObject on customer-pii</span><span class="chip ok">policy ok</span><span class="chip evd">evd-144</span></div>
+        </div>
+      </div>
+
+      <div class="lane">
+        <header>
+          <span class="agent-dot"></span>
+          <span>Critic</span>
+          <span class="muted text-sm">GPT-5.5 · adversarial</span>
+          <span class="muted text-sm" style="margin-left:auto;">1,008 critiques</span>
+        </header>
+        <div class="events">
+          <div class="ev"><span class="t">18:13:55</span><span class="tool">critic.review</span><span>Independent re-derivation of SSRF chain via alt path · agrees</span><span class="chip ok">corroborated</span><span class="chip evd">evd-145</span></div>
+          <div class="ev"><span class="t">18:14:11</span><span class="tool">critic.flag-fp</span><span>finding-0421 (jQuery 3.5 banner) · likely FP · suppress</span><span class="chip ok">FP suppressed</span><span class="chip evd">evd-146</span></div>
+        </div>
+      </div>
+
+      <div class="lane">
+        <header>
+          <span class="agent-dot"></span>
+          <span>Report-Writer (TH/EN)</span>
+          <span class="muted text-sm">GPT-5.5 · drafter · awaiting completion</span>
+          <span class="muted text-sm" style="margin-left:auto;">idle</span>
+        </header>
+        <div class="events">
+          <div class="ev"><span class="t">—</span><span class="tool">waiting</span><span>Will draft bilingual narrative once chain validation reaches 95% confidence threshold</span><span class="chip">queued</span><span class="chip">—</span></div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div class="footer">
+    <span>Every action above is signed and anchored to the evidence ledger.</span>
+    <span class="lang-toggle"><button class="active">EN</button><button>TH</button></span>
+  </div>
+</div>
+</body>
+</html>

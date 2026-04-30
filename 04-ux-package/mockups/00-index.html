@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>AVS Mockups · Index</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="assets/styles.css" />
+<style>
+  .hero {
+    background: linear-gradient(135deg, #0B1220, #1F6FEB 75%, #22D3EE);
+    color: white;
+    padding: 56px 32px;
+    border-radius: 0 0 24px 24px;
+  }
+  .hero h1 { font-size: 38px; font-weight: 800; margin: 0 0 8px; }
+  .hero p  { font-size: 16px; opacity: .85; margin: 0 0 4px; max-width: 720px; }
+  .hero .tagline-th { font-size: 14px; opacity: .75; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 20px; padding: 32px; }
+  .tile {
+    background: white; border-radius: 16px;
+    border: 1px solid var(--gray-200);
+    box-shadow: var(--shadow-sm);
+    padding: 22px;
+    text-decoration: none;
+    color: var(--gray-900);
+    display: block;
+    transition: transform .18s, box-shadow .18s;
+  }
+  .tile:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); text-decoration: none; }
+  .tile .num {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--avs-shield), var(--avs-pulse));
+    color: white;
+    font-weight: 800;
+    border-radius: 8px;
+    padding: 2px 9px;
+    font-size: 12px;
+    margin-bottom: 10px;
+  }
+  .tile h3 { margin: 0 0 4px; font-size: 18px; font-weight: 700; }
+  .tile .th { color: var(--gray-500); font-size: 13px; }
+  .tile p { color: var(--gray-700); font-size: 13px; margin: 10px 0 0; line-height: 1.5; }
+</style>
+</head>
+<body>
+  <div class="hero">
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px;">
+      <svg width="56" height="56" viewBox="0 0 64 64" aria-hidden="true">
+        <defs>
+          <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#1F6FEB"/><stop offset="100%" stop-color="#22D3EE"/>
+          </linearGradient>
+        </defs>
+        <path d="M32 2 L60 12 V36 C60 50 47 61 32 64 C17 61 4 50 4 36 V12 Z" fill="url(#g)"/>
+        <g fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round">
+          <circle cx="20" cy="26" r="3.5"/><circle cx="44" cy="26" r="3.5"/><circle cx="32" cy="46" r="3.5"/>
+          <line x1="20" y1="26" x2="44" y2="26"/><line x1="20" y1="26" x2="32" y2="46"/><line x1="44" y1="26" x2="32" y2="46"/>
+        </g>
+      </svg>
+      <div>
+        <div style="font-size:12px;letter-spacing:2px;text-transform:uppercase;opacity:.75;">AVS · Phase 1 mockups</div>
+        <div style="font-size:24px;font-weight:800;">Agentic Vulnerability Scanner</div>
+      </div>
+    </div>
+    <h1>Autonomous defenders. Verifiable proof.</h1>
+    <p>A multi-LLM scanner that produces exploit-chain findings — in Thai and English — with PDPA-native chain-of-custody and an authorization gate that is a product feature, not a checkbox.</p>
+    <p class="tagline-th">เอเจนต์สแกนช่องโหว่อัตโนมัติ. หลักฐานพิสูจน์ได้.</p>
+  </div>
+
+  <div class="grid">
+    <a class="tile" href="01-dashboard.html"><span class="num">W1</span><h3>Dashboard</h3><div class="th">หน้าหลัก</div><p>Posture summary, latest scan strip, top 5 chains, compliance cadence, agent fleet health.</p></a>
+    <a class="tile" href="02-scope.html"><span class="num">W2</span><h3>Scope &amp; RoE</h3><div class="th">ขอบเขตและกฎการทดสอบ</div><p>Define rules of engagement, sign with WebAuthn, hash-anchor to evidence ledger.</p></a>
+    <a class="tile" href="03-live-timeline.html"><span class="num">W3</span><h3>Live Scan Timeline</h3><div class="th">ไทม์ไลน์การสแกนสด</div><p>Watch every agent, every MCP tool call, every policy decision in real time.</p></a>
+    <a class="tile" href="04-findings.html"><span class="num">W4</span><h3>Findings</h3><div class="th">รายการช่องโหว่</div><p>Top chains first; full filterable list; bilingual cards with evidence chips.</p></a>
+    <a class="tile" href="05-chain-detail.html"><span class="num">W5</span><h3>Chain Detail</h3><div class="th">รายละเอียดเส้นทางการโจมตี</div><p>Visualize the kill-chain, drill into evidence, generate remediation.</p></a>
+    <a class="tile" href="06-report.html"><span class="num">W6</span><h3>Report &amp; Regulator Pack</h3><div class="th">รายงานและชุดหลักฐานเพื่อกำกับดูแล</div><p>Audience-aware reports; PDPA / BoT / PCI / NCSA-CII bundles.</p></a>
+    <a class="tile" href="07-settings.html"><span class="num">W7</span><h3>Settings</h3><div class="th">ตั้งค่า</div><p>Tenant, brand, integrations, model router, security policies.</p></a>
+  </div>
+</body>
+</html>

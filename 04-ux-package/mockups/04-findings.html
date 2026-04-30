@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>AVS · Findings</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand">
+      <svg class="brand-mark" viewBox="0 0 64 64"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#1F6FEB"/><stop offset="100%" stop-color="#22D3EE"/></linearGradient></defs><path d="M32 2 L60 12 V36 C60 50 47 61 32 64 C17 61 4 50 4 36 V12 Z" fill="url(#g)"/><g fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><circle cx="20" cy="26" r="3"/><circle cx="44" cy="26" r="3"/><circle cx="32" cy="46" r="3"/><line x1="20" y1="26" x2="44" y2="26"/><line x1="20" y1="26" x2="32" y2="46"/><line x1="44" y1="26" x2="32" y2="46"/></g></svg>
+      <span>AVS</span>
+    </div>
+    <nav>
+      <a href="01-dashboard.html">Dashboard</a>
+      <a href="02-scope.html">Scopes</a>
+      <a href="03-live-timeline.html">Scans</a>
+      <a href="04-findings.html" class="active">Findings</a>
+      <a href="06-report.html">Reports</a>
+      <a href="07-settings.html">Settings</a>
+    </nav>
+    <div class="right">
+      <span class="pill">● 5 agents online</span>
+      <span style="font-size:13px;opacity:.8;">SCB Tech · TH-Central-1</span>
+      <div class="avatar">PT</div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <h4>Filters</h4>
+      <div style="font-size:13px;">
+        <div class="muted text-sm bold mt-2">Severity</div>
+        <label class="flex gap-2 center mt-2"><input type="checkbox" checked /> <span class="sev critical">Critical</span> <span class="muted">7</span></label>
+        <label class="flex gap-2 center mt-2"><input type="checkbox" checked /> <span class="sev high">High</span> <span class="muted">42</span></label>
+        <label class="flex gap-2 center mt-2"><input type="checkbox" /> <span class="sev medium">Medium</span> <span class="muted">93</span></label>
+        <label class="flex gap-2 center mt-2"><input type="checkbox" /> <span class="sev low">Low</span> <span class="muted">54</span></label>
+
+        <div class="muted text-sm bold mt-4">Lists</div>
+        <label class="flex gap-2 center mt-2"><input type="checkbox" checked /> CISA KEV</label>
+        <label class="flex gap-2 center mt-2"><input type="checkbox" /> EPSS &gt; 0.7</label>
+        <label class="flex gap-2 center mt-2"><input type="checkbox" /> SSVC: act</label>
+
+        <div class="muted text-sm bold mt-4">Surface</div>
+        <label class="flex gap-2 center mt-2"><input type="checkbox" checked /> Internet-facing</label>
+        <label class="flex gap-2 center mt-2"><input type="checkbox" /> Internal AD</label>
+        <label class="flex gap-2 center mt-2"><input type="checkbox" /> Cloud (AWS/Azure)</label>
+        <label class="flex gap-2 center mt-2"><input type="checkbox" /> Container / IaC</label>
+
+        <div class="muted text-sm bold mt-4">Asset tag</div>
+        <input type="text" placeholder="env=prod, scope=external" style="width:100%;padding:6px 8px;border:1px solid var(--gray-200);border-radius:6px;font-size:12px;" />
+
+        <div class="muted text-sm bold mt-4">Since</div>
+        <input type="text" value="last 7 days" style="width:100%;padding:6px 8px;border:1px solid var(--gray-200);border-radius:6px;font-size:12px;" />
+      </div>
+    </aside>
+
+    <main class="content">
+      <div class="page-title">
+        <div>
+          <h1>Findings</h1>
+          <span class="subtitle-th">รายการช่องโหว่ — top chains first, then everything else</span>
+        </div>
+        <div class="flex gap-2">
+          <button class="btn">Push to Jira</button>
+          <button class="btn">Export CSV</button>
+          <button class="btn primary">Generate report</button>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="flex gap-3 mb-3" style="border-bottom:1px solid var(--gray-200);">
+        <a href="#" style="padding:10px 4px;border-bottom:2px solid var(--avs-shield);color:var(--avs-shield);font-weight:700;">Top chains <span class="muted">7</span></a>
+        <a href="#" style="padding:10px 4px;color:var(--gray-700);">All findings <span class="muted">196</span></a>
+        <a href="#" style="padding:10px 4px;color:var(--gray-700);">Diff vs last scan <span class="muted">+12 / −31</span></a>
+        <a href="#" style="padding:10px 4px;color:var(--gray-700);">Suppressed FP <span class="muted">216</span></a>
+      </div>
+
+      <!-- Card 1 -->
+      <div class="card card-pad mb-3">
+        <div class="flex gap-4">
+          <span class="score"><span class="num">94</span><span class="label">CHAIN</span></span>
+          <div style="flex:1;">
+            <div class="flex gap-2 center" style="flex-wrap:wrap;">
+              <span class="sev critical">Critical</span>
+              <span class="chip kev">CISA KEV</span>
+              <span class="chip">EPSS 0.94</span>
+              <span class="chip">SSVC: act</span>
+              <span class="chip evd">evd-118 · evd-143 · evd-144</span>
+              <span class="chip">CVSS 4.0 · 9.6</span>
+            </div>
+            <div class="bi mt-2">
+              <span class="en" style="font-size:16px;">Public API SSRF → IMDS v1 → IAM role <em>edge-tasks</em> → S3 read on customer PII bucket</span>
+              <span class="th">API สาธารณะถูกใช้ดึง credential ผ่าน IMDS แล้วเข้าถึงข้อมูลส่วนบุคคลของลูกค้าใน S3</span>
+            </div>
+            <div class="muted text-sm mt-2">5 hops · 14 hosts · 2 RDS · 1 KMS in blast radius · estimated MTTC for attacker: 11 minutes</div>
+            <div class="flex gap-2 mt-3">
+              <a class="btn primary" href="05-chain-detail.html">View chain →</a>
+              <button class="btn">Push to Jira (SCB-SEC)</button>
+              <button class="btn">Mark FP</button>
+              <button class="btn ghost">Suppress (justify)</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="card card-pad mb-3">
+        <div class="flex gap-4">
+          <span class="score" style="background:linear-gradient(135deg,#DC2626,#EA580C);"><span class="num">91</span><span class="label">CHAIN</span></span>
+          <div style="flex:1;">
+            <div class="flex gap-2 center" style="flex-wrap:wrap;">
+              <span class="sev critical">Critical</span>
+              <span class="chip kev">CISA KEV ×2</span>
+              <span class="chip">EPSS 0.88</span>
+              <span class="chip">SSVC: act</span>
+              <span class="chip evd">evd-58 · evd-201</span>
+            </div>
+            <div class="bi mt-2">
+              <span class="en" style="font-size:16px;">Outdated WordPress (CVE-2024-XXXX RCE) → AD lateral via cached creds → DC compromise</span>
+              <span class="th">WordPress รุ่นเก่าถูกเจาะ → ใช้ credential ที่ค้างเครื่อง ลามไปที่ AD → ยึด Domain Controller</span>
+            </div>
+            <div class="muted text-sm mt-2">8 hosts · 1 DC · domain admin reachable</div>
+            <div class="flex gap-2 mt-3">
+              <a class="btn primary" href="05-chain-detail.html">View chain →</a>
+              <button class="btn">Push to Jira</button>
+              <button class="btn">Mark FP</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="card card-pad mb-3">
+        <div class="flex gap-4">
+          <span class="score" style="background:linear-gradient(135deg,#EA580C,#D97706);"><span class="num">86</span><span class="label">CHAIN</span></span>
+          <div style="flex:1;">
+            <div class="flex gap-2 center" style="flex-wrap:wrap;">
+              <span class="sev high">High</span>
+              <span class="chip">PDPA-relevant</span>
+              <span class="chip">EPSS 0.42</span>
+              <span class="chip evd">evd-77 · evd-92</span>
+            </div>
+            <div class="bi mt-2">
+              <span class="en" style="font-size:16px;">S3 bucket <code>scb-edge-receipts</code> public listing → 218,442 objects with PII</span>
+              <span class="th">S3 ตั้งค่าผิด → ผู้ไม่หวังดีลิสต์ไฟล์ใบเสร็จได้ — มีข้อมูลส่วนบุคคล 218,442 ไฟล์</span>
+            </div>
+            <div class="muted text-sm mt-2">PDPA Art. 37 notification trigger if exfil confirmed · DPO has been auto-notified</div>
+            <div class="flex gap-2 mt-3">
+              <a class="btn primary" href="05-chain-detail.html">View chain →</a>
+              <button class="btn">Open PDPA workflow</button>
+              <button class="btn">Push to Jira</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Single CVE finding -->
+      <div class="card card-pad mb-3">
+        <div class="flex gap-4">
+          <span class="score" style="background:linear-gradient(135deg,#EA580C,#D97706);"><span class="num">82</span><span class="label">CVE</span></span>
+          <div style="flex:1;">
+            <div class="flex gap-2 center" style="flex-wrap:wrap;">
+              <span class="sev high">High</span>
+              <span class="chip kev">CISA KEV</span>
+              <span class="chip">CVE-2024-49113</span>
+              <span class="chip">EPSS 0.78</span>
+              <span class="chip evd">evd-58</span>
+            </div>
+            <div class="bi mt-2">
+              <span class="en" style="font-size:16px;">LDAPNightmare on api.scbtech.example — exploitability confirmed via passive evidence</span>
+              <span class="th">CVE-2024-49113 บน LDAP — ยืนยันการโจมตีได้จากหลักฐานเชิงรับ (ไม่ได้ยิงจริง)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- single misconfig -->
+      <div class="card card-pad mb-3">
+        <div class="flex gap-4">
+          <span class="score" style="background:linear-gradient(135deg,#D97706,#65A30D);"><span class="num">71</span><span class="label">MISCFG</span></span>
+          <div style="flex:1;">
+            <div class="flex gap-2 center" style="flex-wrap:wrap;">
+              <span class="sev medium">Medium</span>
+              <span class="chip">CIS AWS 2.1.5</span>
+              <span class="chip evd">evd-31</span>
+            </div>
+            <div class="bi mt-2">
+              <span class="en" style="font-size:16px;">Azure Storage account <code>scbedgelogs01</code> · public blob anonymous read</span>
+              <span class="th">บัญชี Azure Storage — เปิดอ่านสาธารณะแบบไม่ระบุตัวตน</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="muted text-sm text-center mt-3" style="text-align:center;">Showing 5 of 196 promoted findings · 216 false-positives suppressed by Critic</div>
+    </main>
+  </div>
+
+  <div class="footer">
+    <span>Every finding here was independently re-derived by the Critic agent before being shown.</span>
+    <span class="lang-toggle"><button class="active">EN</button><button>TH</button></span>
+  </div>
+</div>
+</body>
+</html>

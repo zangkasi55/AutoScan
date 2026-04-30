@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>AVS · Report &amp; Regulator Pack</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="assets/styles.css" />
+<style>
+  .preview {
+    background: white;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    padding: 28px 32px;
+    box-shadow: var(--shadow-sm);
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--gray-700);
+    min-height: 700px;
+  }
+  .preview h2 { font-size: 22px; color: var(--gray-900); margin: 0 0 4px; }
+  .preview h3 { font-size: 16px; color: var(--gray-900); margin: 22px 0 8px; border-bottom: 1px solid var(--gray-200); padding-bottom: 4px; }
+  .preview .cover-banner {
+    background: linear-gradient(135deg, var(--avs-ink), var(--avs-shield));
+    color: white;
+    padding: 18px 22px;
+    border-radius: var(--radius-md);
+    margin-bottom: 18px;
+  }
+  .preview .cover-banner h1 { font-size: 24px; margin: 0; }
+  .preview .cover-banner .th { font-size: 14px; opacity: .8; margin-top: 2px; }
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand">
+      <svg class="brand-mark" viewBox="0 0 64 64"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#1F6FEB"/><stop offset="100%" stop-color="#22D3EE"/></linearGradient></defs><path d="M32 2 L60 12 V36 C60 50 47 61 32 64 C17 61 4 50 4 36 V12 Z" fill="url(#g)"/><g fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><circle cx="20" cy="26" r="3"/><circle cx="44" cy="26" r="3"/><circle cx="32" cy="46" r="3"/><line x1="20" y1="26" x2="44" y2="26"/><line x1="20" y1="26" x2="32" y2="46"/><line x1="44" y1="26" x2="32" y2="46"/></g></svg>
+      <span>AVS</span>
+    </div>
+    <nav>
+      <a href="01-dashboard.html">Dashboard</a>
+      <a href="02-scope.html">Scopes</a>
+      <a href="03-live-timeline.html">Scans</a>
+      <a href="04-findings.html">Findings</a>
+      <a href="06-report.html" class="active">Reports</a>
+      <a href="07-settings.html">Settings</a>
+    </nav>
+    <div class="right">
+      <span class="pill">● 5 agents online</span>
+      <span style="font-size:13px;opacity:.8;">SCB Tech · TH-Central-1</span>
+      <div class="avatar">PT</div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <h4>Audience</h4>
+      <ul>
+        <li><a href="#" class="active">CISO &amp; board</a></li>
+        <li><a href="#">Analyst (deep technical)</a></li>
+        <li><a href="#">Asset owner (per-team)</a></li>
+        <li><a href="#">Regulator pack</a></li>
+      </ul>
+      <h4>Regulator bundles</h4>
+      <ul>
+        <li><a href="#">PDPA evidence pack</a></li>
+        <li><a href="#">BoT cyber-resilience</a></li>
+        <li><a href="#">PCI DSS 4.0 ASV</a></li>
+        <li><a href="#">NCSA / CII reporting</a></li>
+      </ul>
+      <h4>Language</h4>
+      <ul>
+        <li><a href="#" class="active">Bilingual EN+TH</a></li>
+        <li><a href="#">EN only</a></li>
+        <li><a href="#">TH only</a></li>
+      </ul>
+    </aside>
+
+    <main class="content">
+      <div class="page-title">
+        <div>
+          <h1>Report builder</h1>
+          <span class="subtitle-th">รายงานและชุดหลักฐานเพื่อกำกับดูแล — preview, then export signed bundle</span>
+        </div>
+        <div class="flex gap-2">
+          <button class="btn">📄 PDF (signed)</button>
+          <button class="btn">📊 Excel</button>
+          <button class="btn">🛰️ STIX 2.1</button>
+          <button class="btn">📦 CycloneDX SBOM</button>
+          <button class="btn primary">📥 Export regulator bundle</button>
+        </div>
+      </div>
+
+      <div class="grid-2 mb-4" style="grid-template-columns: 280px 1fr;">
+        <!-- LEFT: bundle assembly -->
+        <div>
+          <div class="card card-pad mb-4">
+            <h3>Bundle contents</h3>
+            <label class="flex gap-2 center mt-3"><input type="checkbox" checked /> Executive summary</label>
+            <label class="flex gap-2 center mt-2"><input type="checkbox" checked /> Top 5 attack chains</label>
+            <label class="flex gap-2 center mt-2"><input type="checkbox" checked /> Full findings list</label>
+            <label class="flex gap-2 center mt-2"><input type="checkbox" checked /> Evidence ledger excerpt</label>
+            <label class="flex gap-2 center mt-2"><input type="checkbox" /> Raw scan logs</label>
+            <label class="flex gap-2 center mt-2"><input type="checkbox" checked /> Remediation roadmap</label>
+            <label class="flex gap-2 center mt-2"><input type="checkbox" checked /> RoE document + signature</label>
+            <label class="flex gap-2 center mt-2"><input type="checkbox" checked /> Bilingual narrative (EN+TH)</label>
+          </div>
+          <div class="card card-pad mb-4">
+            <h3>Signature &amp; chain anchor</h3>
+            <div class="muted text-sm mt-2">The exported bundle is signed by the AVS report key and the SHA-256 hash is anchored to the evidence ledger.</div>
+            <pre class="mono mt-3" style="font-size:11px;">bundle.sha256 = a7f3…91ce
+ledger.root   = b41c…3f7a
+TSA           = digicert-tsa-th
+signed-by     = avs-report-signer/v1</pre>
+            <div class="mt-3 flex gap-2"><span class="chip evd">verifiable</span><span class="chip ok">PDPA-compliant</span></div>
+          </div>
+          <div class="card card-pad">
+            <h3>Audit policy</h3>
+            <div class="muted text-sm mt-2">Auto-redacts Thai PII (citizen ID, phone, banking format) before export. DPO can override per-section.</div>
+            <div class="mt-3 flex gap-2"><span class="chip ok">redaction on</span><span class="chip">DPO co-signed</span></div>
+          </div>
+        </div>
+
+        <!-- RIGHT: live preview -->
+        <div class="preview">
+          <div class="cover-banner">
+            <div style="display:flex;align-items:center;gap:14px;">
+              <svg width="40" height="40" viewBox="0 0 64 64" aria-hidden="true">
+                <defs><linearGradient id="g2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#1F6FEB"/><stop offset="100%" stop-color="#22D3EE"/></linearGradient></defs>
+                <path d="M32 2 L60 12 V36 C60 50 47 61 32 64 C17 61 4 50 4 36 V12 Z" fill="url(#g2)"/>
+                <g fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><circle cx="20" cy="26" r="3"/><circle cx="44" cy="26" r="3"/><circle cx="32" cy="46" r="3"/><line x1="20" y1="26" x2="44" y2="26"/><line x1="20" y1="26" x2="32" y2="46"/><line x1="44" y1="26" x2="32" y2="46"/></g>
+              </svg>
+              <div>
+                <div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;opacity:.75;">CISO Brief · Q2 2026</div>
+                <h1>Internet-facing posture · scan-7c4a</h1>
+                <div class="th">รายงานสรุปความเสี่ยงเชิงบริหาร · ครั้งที่ 7c4a</div>
+              </div>
+            </div>
+          </div>
+
+          <h3>Executive summary · บทสรุปสำหรับผู้บริหาร</h3>
+          <p><strong>EN:</strong> Of 218 internet-facing assets in scope, the AVS scan validated 7 critical attack chains and 42 high-severity issues. The top chain enables exfiltration of 218,442 customer records (citizen ID + phone) via a 5-hop path from a public API SSRF to an over-permissive S3 bucket. PDPA Art. 37 notification thresholds would be met if this chain were exploited.</p>
+          <p><strong>TH:</strong> จากทรัพย์สิน 218 รายการที่เปิดให้อินเทอร์เน็ตเข้าถึงได้ AVS ยืนยันเส้นทางโจมตีระดับวิกฤต 7 เส้นทาง และช่องโหว่ระดับสูง 42 รายการ เส้นทางอันดับหนึ่งสามารถนำไปสู่การรั่วของข้อมูลลูกค้า 218,442 รายการ ครอบคลุมเลขบัตรประชาชนและเบอร์โทรศัพท์ ซึ่งหากถูกโจมตีจริง จะเข้าข่ายต้องแจ้งเหตุตามมาตรา 37 ของ พ.ร.บ. คุ้มครองข้อมูลส่วนบุคคล</p>
+
+          <h3>Top 5 attack chains · เส้นทางโจมตีที่สำคัญ</h3>
+          <table class="tbl">
+            <thead><tr><th>#</th><th>Chain</th><th>Score</th><th>KEV</th><th>Owner</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td>SSRF→IMDS→IAM→S3 PII</td><td><span class="sev critical">94</span></td><td>✓</td><td>edge-platform</td></tr>
+              <tr><td>2</td><td>WordPress RCE→AD→DC</td><td><span class="sev critical">91</span></td><td>✓</td><td>marketing-web</td></tr>
+              <tr><td>3</td><td>S3 misconfig→PII listing</td><td><span class="sev high">86</span></td><td>—</td><td>edge-platform</td></tr>
+              <tr><td>4</td><td>Entra app secret in repo</td><td><span class="sev high">84</span></td><td>—</td><td>devx</td></tr>
+              <tr><td>5</td><td>Kerberoast→privileged user</td><td><span class="sev high">79</span></td><td>—</td><td>identity</td></tr>
+            </tbody>
+          </table>
+
+          <h3>Evidence integrity · ความสมบูรณ์ของหลักฐาน</h3>
+          <p>Every finding cited above traces back to one or more evidence records anchored to the AVS evidence ledger. The Merkle root for this scan is <code>b41c9…3f7a</code>, time-stamped via RFC 3161 at <code>2026-04-30T18:14:00Z</code> by <code>digicert-tsa-th</code>. Tampering with any evidence row would invalidate the root and the signed bundle hash.</p>
+
+          <h3>Recommended remediation roadmap · แผนการแก้ไข</h3>
+          <ul>
+            <li><strong>0–7 days:</strong> Force IMDSv2 fleet-wide; tighten <code>edge-tasks</code> IAM; rotate Entra app secrets discovered in repo.</li>
+            <li><strong>7–30 days:</strong> WAF rules for SSRF; WordPress upgrade or replace; AD tier-0 hardening for Kerberoastable SPNs.</li>
+            <li><strong>30–90 days:</strong> Roll continuous-validation cadence weekly on internet-facing scope; add AVS to BoT-required pen-test rotation.</li>
+          </ul>
+
+          <h3>Compliance mapping · การผูกกับข้อกำหนด</h3>
+          <p class="muted text-sm">Findings auto-mapped to PDPA Art. 37 (breach notification trigger), BoT IT Risk Guideline §5 (asset/data control), PCI DSS 4.0 Req. 1.4 / 6.4.1 / 11.4 (CDE testing), and NCSA CII incident reporting (sector: Banking).</p>
+
+          <div class="mt-4" style="border-top:1px dashed var(--gray-200);padding-top:12px;font-size:11px;color:var(--gray-500);">
+            Generated by AVS · scan-7c4a · 2026-04-30T18:42 ICT · bundle.sha256 a7f3…91ce · ledger b41c…3f7a · signed-by avs-report-signer/v1
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div class="footer">
+    <span>Reports are deterministic: same evidence ledger → same bundle hash. Auditable end-to-end.</span>
+    <span class="lang-toggle"><button class="active">EN</button><button>TH</button></span>
+  </div>
+</div>
+</body>
+</html>
