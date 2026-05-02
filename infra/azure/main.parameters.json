@@ -22,6 +22,9 @@
     },
     "adminPrincipalObjectId": {
       "value": "869f985b-56aa-4f7f-a0b8-e2b425071522"
+    },
+    "existingLogAnalyticsId": {
+      "value": "/subscriptions/cddad485-52e5-4089-8692-6bb00801606c/resourceGroups/AutoScan/providers/Microsoft.OperationalInsights/workspaces/autoscan-dev-law"
     }
   }
 }

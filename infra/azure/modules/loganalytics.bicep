@@ -20,7 +20,7 @@ resource law 'Microsoft.OperationalInsights/workspaces@2023-09-01' = if (createN
 }
 
 // Microsoft Sentinel on top of the workspace (enables SecurityInsights solution).
-resource sentinel 'Microsoft.OperationsManagement/solutions@2015-11-01' = if (createNew && enableSentinel) {
+resource sentinel 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = if (createNew && enableSentinel) {
   name: 'SecurityInsights(${workspaceName})'
   location: location
   tags: tags

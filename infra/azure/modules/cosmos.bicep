@@ -19,7 +19,7 @@ resource cosmos 'Microsoft.DocumentDB/databaseAccounts@2024-11-15' = {
       { name: 'EnableServerless' }
     ]
     consistencyPolicy: { defaultConsistencyLevel: 'Session' }
-    locations: [{ locationName: location, failoverPriority: 0 }]
+    locations: [{ locationName: location, failoverPriority: 0, isZoneRedundant: false }]
     disableLocalAuth: true
     publicNetworkAccess: 'Enabled'
     minimalTlsVersion: 'Tls12'

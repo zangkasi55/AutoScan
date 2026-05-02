@@ -36,12 +36,14 @@ param enableDefenderPlans bool = true
 @description('Deploy the Microsoft Sentinel solution onto the Log Analytics workspace.')
 param enableSentinel bool = true
 
-@description('Models to deploy in Azure OpenAI. Each entry: { name, version, sku, capacity }.')
+@description('Azure region for Postgres Flexible Server (eastus is quota-restricted; eastus2 has capacity).')
+param postgresLocation string = 'eastus2'
+
 param openAIDeployments array = [
-  { name: 'gpt-4o',                version: '2024-11-20', sku: 'GlobalStandard', capacity: 50 }
-  { name: 'gpt-4o-mini',           version: '2024-07-18', sku: 'GlobalStandard', capacity: 100 }
-  { name: 'o1-mini',               version: '2024-09-12', sku: 'GlobalStandard', capacity: 30 }
-  { name: 'text-embedding-3-large', version: '1',         sku: 'Standard',       capacity: 50 }
+  { name: 'gpt-4o',                version: '2024-11-20', sku: 'Standard',  capacity: 30 }
+  { name: 'gpt-4o-mini',           version: '2024-07-18', sku: 'Standard',  capacity: 50 }
+  { name: 'o1-mini',               version: '2024-09-12', sku: 'GlobalStandard', capacity: 20 }
+  { name: 'text-embedding-3-large', version: '1',         sku: 'Standard',  capacity: 30 }
 ]
 
 var tags = {
@@ -139,7 +141,7 @@ module postgres 'modules/postgres.bicep' = {
   scope: rg
   name: 'postgres'
   params: {
-    location: location
+    location: postgresLocation
     projectName: projectName
     environment: environment
     tags: tags
