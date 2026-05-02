@@ -2,12 +2,26 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "location":           { "value": "eastus" },
-    "environment":        { "value": "dev" },
-    "resourceGroupName":  { "value": "AutoScan" },
-    "projectName":        { "value": "autoscan" },
-    "enableDefenderPlans":{ "value": true },
-    "enableSentinel":     { "value": true },
-    "adminPrincipalObjectId": { "value": "" }
+    "location": {
+      "value": "eastus"
+    },
+    "environment": {
+      "value": "dev"
+    },
+    "resourceGroupName": {
+      "value": "AutoScan"
+    },
+    "projectName": {
+      "value": "autoscan"
+    },
+    "enableDefenderPlans": {
+      "value": true
+    },
+    "enableSentinel": {
+      "value": true
+    },
+    "adminPrincipalObjectId": {
+      "value": "869f985b-56aa-4f7f-a0b8-e2b425071522"
+    }
   }
 }
