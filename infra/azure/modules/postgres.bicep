@@ -9,7 +9,7 @@ param keyVaultName string
 @description('Initial Postgres admin password. Stored to Key Vault secret evidence-pg-admin-password.')
 param adminPassword string = newGuid()
 
-var serverName = take(toLower('${projectName}-${environment}-pg-${uniqueString(resourceGroup().id)}'), 60)
+var serverName = take(toLower('${projectName}-${environment}-pgs-${uniqueString(resourceGroup().id)}'), 60)
 var dbName = 'evidence'
 
 resource pg 'Microsoft.DBforPostgreSQL/flexibleServers@2024-08-01' = {

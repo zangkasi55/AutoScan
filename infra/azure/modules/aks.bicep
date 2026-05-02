@@ -6,7 +6,7 @@ param tags object
 param workspaceId string
 param workloadIdentityResourceId string
 param acrId string
-param kubernetesVersion string = '1.32'
+param kubernetesVersion string = '1.33'
 
 var name = '${projectName}-${environment}-aks'
 

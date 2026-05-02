@@ -42,7 +42,7 @@ param postgresLocation string = 'eastus2'
 param openAIDeployments array = [
   { name: 'gpt-4.1',               version: '2025-04-14', sku: 'Standard',       capacity: 30 }
   { name: 'gpt-4.1-mini',          version: '2025-04-14', sku: 'Standard',       capacity: 50 }
-  { name: 'o3-mini',               version: '2025-01-31', sku: 'GlobalStandard', capacity: 20 }
+  { name: 'o4-mini',               version: '2025-04-16', sku: 'Standard',       capacity: 20 }
   { name: 'text-embedding-3-large', version: '1',         sku: 'Standard',       capacity: 30 }
 ]
 
@@ -200,7 +200,7 @@ module frontdoor 'modules/frontdoor.bicep' = {
 }
 
 module defender 'modules/defender.bicep' = if (enableDefenderPlans) {
-  name: 'defender'
+  name: 'autoscan-defender'
   scope: subscription()
   params: {}
 }
