@@ -47,7 +47,7 @@ param openAIDeployments array = [
 ]
 
 @description('UTC timestamp suffix to ensure unique deployment names across retries.')
-param deploymentSuffix string = utcNow('yyyyMMddHHmm')
+param deploymentSuffix string = utcNow('yyyyMMddHHmmss')
 
 var tags = {
   project: 'AutoScan'

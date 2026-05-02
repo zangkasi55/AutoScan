@@ -49,7 +49,7 @@ resource aks 'Microsoft.ContainerService/managedClusters@2024-09-01' = {
         mode: 'System'
         count: 2
         vmSize: 'Standard_DC4s_v3'
-        osDiskType: 'Ephemeral'
+        osDiskType: 'Managed'
         osType: 'Linux'
         type: 'VirtualMachineScaleSets'
         availabilityZones: []
@@ -60,7 +60,7 @@ resource aks 'Microsoft.ContainerService/managedClusters@2024-09-01' = {
         mode: 'User'
         count: 2
         vmSize: 'Standard_DC4s_v3'
-        osDiskType: 'Ephemeral'
+        osDiskType: 'Managed'
         osType: 'Linux'
         nodeLabels: { workload: 'autoscan' }
         nodeTaints: ['workload=autoscan:NoSchedule']
@@ -76,7 +76,7 @@ resource aks 'Microsoft.ContainerService/managedClusters@2024-09-01' = {
         mode: 'User'
         count: 0
         vmSize: 'Standard_DC4s_v3'
-        osDiskType: 'Ephemeral'
+        osDiskType: 'Managed'
         osType: 'Linux'
         nodeLabels: { workload: 'sandbox', isolation: 'gvisor' }
         nodeTaints: ['workload=sandbox:NoSchedule']
