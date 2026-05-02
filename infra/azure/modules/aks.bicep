@@ -52,7 +52,7 @@ resource aks 'Microsoft.ContainerService/managedClusters@2024-09-01' = {
         osDiskType: 'Ephemeral'
         osType: 'Linux'
         type: 'VirtualMachineScaleSets'
-        availabilityZones: ['1','2','3']
+        availabilityZones: []
         upgradeSettings: { maxSurge: '33%' }
       }
       {
@@ -65,7 +65,7 @@ resource aks 'Microsoft.ContainerService/managedClusters@2024-09-01' = {
         nodeLabels: { workload: 'autoscan' }
         nodeTaints: ['workload=autoscan:NoSchedule']
         type: 'VirtualMachineScaleSets'
-        availabilityZones: ['1','2','3']
+        availabilityZones: []
         enableAutoScaling: true
         minCount: 2
         maxCount: 10
