@@ -46,6 +46,9 @@ param openAIDeployments array = [
   { name: 'text-embedding-3-large', version: '1',         sku: 'Standard',       capacity: 30 }
 ]
 
+@description('UTC timestamp suffix to ensure unique deployment names across retries.')
+param deploymentSuffix string = utcNow('yyyyMMddHHmm')
+
 var tags = {
   project: 'AutoScan'
   product: 'Sentry-AI'
@@ -139,7 +142,7 @@ module acr 'modules/acr.bicep' = {
 
 module postgres 'modules/postgres.bicep' = {
   scope: rg
-  name: 'postgres'
+  name: 'postgres-${deploymentSuffix}'
   params: {
     location: postgresLocation
     projectName: projectName
@@ -151,7 +154,7 @@ module postgres 'modules/postgres.bicep' = {
 
 module cosmos 'modules/cosmos.bicep' = {
   scope: rg
-  name: 'cosmos'
+  name: 'cosmos-${deploymentSuffix}'
   params: {
     location: location
     projectName: projectName
@@ -163,7 +166,7 @@ module cosmos 'modules/cosmos.bicep' = {
 
 module openai 'modules/openai.bicep' = {
   scope: rg
-  name: 'openai'
+  name: 'openai-${deploymentSuffix}'
   params: {
     location: location
     projectName: projectName
@@ -177,7 +180,7 @@ module openai 'modules/openai.bicep' = {
 
 module aks 'modules/aks.bicep' = {
   scope: rg
-  name: 'aks'
+  name: 'aks-${deploymentSuffix}'
   params: {
     location: location
     projectName: projectName
@@ -191,7 +194,7 @@ module aks 'modules/aks.bicep' = {
 
 module frontdoor 'modules/frontdoor.bicep' = {
   scope: rg
-  name: 'frontdoor'
+  name: 'frontdoor-${deploymentSuffix}'
   params: {
     projectName: projectName
     environment: environment
@@ -200,7 +203,7 @@ module frontdoor 'modules/frontdoor.bicep' = {
 }
 
 module defender 'modules/defender.bicep' = if (enableDefenderPlans) {
-  name: 'autoscan-defender'
+  name: 'defender-${deploymentSuffix}'
   scope: subscription()
   params: {}
 }
