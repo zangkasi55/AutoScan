@@ -6,7 +6,7 @@
 
 set -euo pipefail
 
-SUB="${1:-${AZURE_SUBSCRIPTION_ID:-0fdda5f4-0853-4336-8f41-0370176387f5}}"
+SUB="${1:-${AZURE_SUBSCRIPTION_ID:-cddad485-52e5-4089-8692-6bb00801606c}}"
 REPO="${2:-${GITHUB_REPO:-zangkasi55/AutoScan}}"
 APP_NAME="autoscan-github-oidc"
 
