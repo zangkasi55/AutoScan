@@ -37,7 +37,7 @@ param enableDefenderPlans bool = true
 param enableSentinel bool = true
 
 @description('Azure region for Postgres Flexible Server (eastus is quota-restricted; eastus2 has capacity).')
-param postgresLocation string = 'eastus2'
+param postgresLocation string = 'centralus'
 
 param openAIDeployments array = [
   { name: 'gpt-4.1',               version: '2025-04-14', sku: 'Standard',       capacity: 30 }
