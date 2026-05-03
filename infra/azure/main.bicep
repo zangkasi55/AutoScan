@@ -30,6 +30,9 @@ param existingLogAnalyticsId string = ''
 @description('Optional: existing Azure OpenAI resource id (in same sub) to reuse. Leave empty to create new.')
 param existingOpenAIId string = ''
 
+@description('Set true to skip AKS deployment (when AKS already exists and is healthy).')
+param skipAks bool = false
+
 @description('Optional: enable Microsoft Defender for Cloud plans (CSPM + Servers + Containers + Storage + KeyVault + Databases + AppServices).')
 param enableDefenderPlans bool = true
 
@@ -38,6 +41,9 @@ param enableSentinel bool = true
 
 @description('Azure region for Postgres Flexible Server (eastus is quota-restricted; eastus2 has capacity).')
 param postgresLocation string = 'centralus'
+
+@description('Azure region for Cosmos DB (eastus has zonal redundancy capacity issues).')
+param cosmosLocation string = 'centralus'
 
 param openAIDeployments array = [
   { name: 'gpt-4.1',               version: '2025-04-14', sku: 'Standard',       capacity: 30 }
@@ -156,7 +162,7 @@ module cosmos 'modules/cosmos.bicep' = {
   scope: rg
   name: 'cosmos-${deploymentSuffix}'
   params: {
-    location: location
+    location: cosmosLocation
     projectName: projectName
     environment: environment
     tags: tags
@@ -178,7 +184,7 @@ module openai 'modules/openai.bicep' = {
   }
 }
 
-module aks 'modules/aks.bicep' = {
+module aks 'modules/aks.bicep' = if (!skipAks) {
   scope: rg
   name: 'aks-${deploymentSuffix}'
   params: {
@@ -213,7 +219,7 @@ output resourceGroupName string = rg.name
 output workspaceId string = logs.outputs.workspaceId
 output keyVaultUri string = kv.outputs.keyVaultUri
 output acrLoginServer string = acr.outputs.loginServer
-output aksName string = aks.outputs.aksName
+output aksName string = skipAks ? '${projectName}-${environment}-aks' : aks.outputs.aksName
 output openAIEndpoint string = openai.outputs.endpoint
 output postgresFqdn string = postgres.outputs.fqdn
 output cosmosEndpoint string = cosmos.outputs.endpoint

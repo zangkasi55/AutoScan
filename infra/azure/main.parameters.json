@@ -28,6 +28,9 @@
     },
     "existingOpenAIId": {
       "value": "/subscriptions/cddad485-52e5-4089-8692-6bb00801606c/resourceGroups/AutoScan/providers/Microsoft.CognitiveServices/accounts/autoscan-dev-aoai-wpecupssj5jxy"
+    },
+    "skipAks": {
+      "value": true
     }
   }
 }
