@@ -198,16 +198,6 @@ module aks 'modules/aks.bicep' = if (!skipAks) {
   }
 }
 
-module frontdoor 'modules/frontdoor.bicep' = {
-  scope: rg
-  name: 'frontdoor-${deploymentSuffix}'
-  params: {
-    projectName: projectName
-    environment: environment
-    tags: tags
-  }
-}
-
 module defender 'modules/defender.bicep' = if (enableDefenderPlans) {
   name: 'defender-${deploymentSuffix}'
   scope: subscription()
@@ -225,4 +215,3 @@ output postgresFqdn string = postgres.outputs.fqdn
 output cosmosEndpoint string = cosmos.outputs.endpoint
 output storageAccountName string = storage.outputs.accountName
 output managedIdentityClientId string = identity.outputs.clientId
-output frontDoorEndpoint string = frontdoor.outputs.endpointHostname

@@ -111,8 +111,8 @@ az aks get-credentials -g AutoScan -n $(az aks list -g AutoScan --query "[0].nam
 kubectl get pods -n autoscan
 kubectl logs -l app.kubernetes.io/component=api -n autoscan
 
-# Front Door endpoint
-az afd endpoint list -g AutoScan --profile-name autoscan-dev-fd
+# Get the public IP of the ingress / LoadBalancer
+kubectl get svc -n autoscan
 ```
 
 Defender for Cloud findings will start populating within ~30 min in the Azure portal under Defender for Cloud → Recommendations.

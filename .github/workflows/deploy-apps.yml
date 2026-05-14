@@ -18,7 +18,7 @@ permissions:
   contents: read
 
 env:
-  AZURE_SUBSCRIPTION_ID: 0fdda5f4-0853-4336-8f41-0370176387f5
+  AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
   AZURE_RG: AutoScan
   ENVIRONMENT: ${{ github.event.inputs.environment }}
   TAG: ${{ github.event.inputs.tag != '' && github.event.inputs.tag || github.sha }}
